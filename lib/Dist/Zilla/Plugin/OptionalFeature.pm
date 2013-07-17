@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::Plugin::OptionalFeature;
 {
-  $Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.001';
+  $Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.002';
 }
-# git description: 38a980b
+# git description: v0.001-4-g9e63156
 
 BEGIN {
   $Dist::Zilla::Plugin::OptionalFeature::AUTHORITY = 'cpan:ETHER';
@@ -63,21 +63,17 @@ around BUILDARGS => sub
 
     my $args = $class->$orig(@_);
 
-    my ($zilla, $plugin_name, $feature_name, $description, $always_recommend) =
-        delete @{$args}{qw(zilla plugin_name name description always_recommend)};
-
     my @private = grep { /^_/ } keys %$args;
     confess "Invalid options: @private" if @private;
 
-    my %other;
-    for my $dkey (grep { /^-/ } keys %$args)
-    {
-        (my $key = $dkey) =~ s/^-//;
-        confess "invalid option: $dkey" if $dkey ne '-type' and $dkey ne '-phase';
-        $other{$key} = delete $args->{$dkey};
-    }
-    my $phase = $other{phase};
-    my $type = $other{type};
+    my ($zilla, $plugin_name) = delete @{$args}{qw(zilla plugin_name)};
+
+    my ($feature_name, $description, $always_recommend, $phase) =
+        delete @{$args}{qw(-name -description -always_recommend -phase)};
+    my ($type) = grep { defined } delete @{$args}{qw(-type -relationship)};
+
+    my @other_options = grep { /^-/ } keys %$args;
+    confess "invalid option(s): @other_options" if @other_options;
 
     # handle magic plugin names
     if ((not $feature_name or not $phase or not $type)
@@ -164,14 +160,14 @@ Dist::Zilla::Plugin::OptionalFeature - Specify prerequisites for optional featur
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 SYNOPSIS
 
 In your F<dist.ini>:
 
     [OptionalFeature / XS Support]
-    description = XS implementation (faster, requires a compiler)
+    -description = XS implementation (faster, requires a compiler)
     Foo::Bar::XS = 1.002
 
 =head1 DESCRIPTION
@@ -185,8 +181,8 @@ from the plugin name.
 
 You can specify requirements for different phases and relationships with:
 
-    [OptionalFeatures / Feature name]
-    description = description
+    [OptionalFeature / Feature name]
+    -description = description
     -phase = test
     -relationship = requires
     Fitz::Fotz    = 1.23
@@ -198,13 +194,13 @@ C<requires>.
 To specify feature requirements for multiple phases, provide them as separate
 plugin configurations (keeping the feature name and description constant):
 
-    [OptionalFeatures / Feature name]
-    description = description
+    [OptionalFeature / Feature name]
+    -description = description
     -phase = runtime
     Foo::Bar = 0
 
-    [OptionalFeatures / Feature name]
-    description = description
+    [OptionalFeature / Feature name]
+    -description = description
     -phase = test
     Foo::Baz = 0
 
@@ -221,8 +217,8 @@ The example below is equivalent to the synopsis example above, except for the
 name of the resulting plugin:
 
     [OptionalFeature]
-    name = XS Support
-    description = XS implementation (faster, requires a compiler)
+    -name = XS Support
+    -description = XS implementation (faster, requires a compiler)
     -phase = runtime
     -relationship = requires
     Foo::Bar::XS = 1.002
@@ -235,17 +231,17 @@ This is mostly a restating of the information above.
 
 =over 4
 
-=item * C<name>
+=item * C<-name>
 
 The name of the optional feature, to be presented to the user. Can also be
 extracted from the plugin name.
 
-=item * C<description>
+=item * C<-description>
 
 The description of the optional feature, to be presented to the user.
 Defaults to the feature name, if not provided.
 
-=item * C<always_recommend>
+=item * C<-always_recommend>
 
 If set with a true value, the prerequisites are added to the distribution's
 metadata as recommended prerequisites (e.g. L<cpanminus> will install
@@ -257,7 +253,7 @@ non-interactively).
 The phase of the prequisite(s). Should be one of: build, test, runtime,
 or develop.
 
-=item * C<-relationship>
+=item * C<-relationship> (or C<-type>)
 
 The relationship of the prequisite(s). Should be one of: requires, recommends,
 suggests, or conflicts.
@@ -280,7 +276,7 @@ L<CPAN::Meta::Spec/optional_features>
 
 =item *
 
-L<Module::Install/features, feature (Module:Install::Metadata)>
+L<Module::Install::API/features, feature (Module::Install::Metadata)>
 
 =back
 

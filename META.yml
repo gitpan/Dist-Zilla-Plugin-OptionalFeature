@@ -29,7 +29,7 @@ no_index:
 provides:
   Dist::Zilla::Plugin::OptionalFeature:
     file: lib/Dist/Zilla/Plugin/OptionalFeature.pm
-    version: 0.001
+    version: 0.002
 requires:
   Dist::Zilla::Role::MetaProvider: 0
   Dist::Zilla::Role::PrereqSource: 0
@@ -44,7 +44,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-OptionalFeature
   homepage: https://github.com/karenetheridge/Dist-Zilla-Plugin-OptionalFeature
   repository: https://github.com/karenetheridge/Dist-Zilla-Plugin-OptionalFeature.git
-version: 0.001
+version: 0.002
 x_Dist_Zilla:
   perl:
     version: 5.019001
