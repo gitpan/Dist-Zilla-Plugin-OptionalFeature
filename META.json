@@ -46,14 +46,14 @@
             "MooseX::Types::Common::String" : "0",
             "MooseX::Types::Moose" : "0",
             "namespace::autoclean" : "0",
-            "perl" : "5.006",
+            "perl" : "5.009005",
             "strict" : "0",
             "warnings" : "0"
          }
       },
       "test" : {
          "requires" : {
-            "File::Find" : "0",
+            "Capture::Tiny" : "0",
             "File::Temp" : "0",
             "Test::CheckDeps" : "0.006",
             "Test::DZil" : "0",
@@ -68,7 +68,7 @@
    "provides" : {
       "Dist::Zilla::Plugin::OptionalFeature" : {
          "file" : "lib/Dist/Zilla/Plugin/OptionalFeature.pm",
-         "version" : "0.002"
+         "version" : "0.003"
       }
    },
    "release_status" : "stable",
@@ -84,7 +84,7 @@
          "web" : "https://github.com/karenetheridge/Dist-Zilla-Plugin-OptionalFeature"
       }
    },
-   "version" : "0.002",
+   "version" : "0.003",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019001"
@@ -168,7 +168,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Test::Compile",
             "name" : "@Author::ETHER/Test::Compile",
-            "version" : "2.002"
+            "version" : "2.006"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::CheckDeps",

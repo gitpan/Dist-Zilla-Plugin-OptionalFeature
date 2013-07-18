@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::Plugin::OptionalFeature;
 {
-  $Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.002';
+  $Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.003';
 }
-# git description: v0.001-4-g9e63156
+# git description: v0.002-2-g3878c74
 
 BEGIN {
   $Dist::Zilla::Plugin::OptionalFeature::AUTHORITY = 'cpan:ETHER';
@@ -85,9 +85,9 @@ around BUILDARGS => sub
         if ($feature_name =~ / -
                 (Build|Test|Runtime|Configure|Develop)
                 (Requires|Recommends|Suggests|Conflicts)?
-            \z/x)
+            \z/xp)
         {
-            $feature_name = $`;
+            $feature_name = ${^PREMATCH};
             $phase ||= lc($1) if $1;
             $type = lc($2) if $2;
         }
@@ -144,7 +144,7 @@ sub metadata
     };
 }
 
-1;
+__PACKAGE__->meta->make_immutable;
 
 __END__
 
@@ -160,7 +160,7 @@ Dist::Zilla::Plugin::OptionalFeature - Specify prerequisites for optional featur
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 SYNOPSIS
 

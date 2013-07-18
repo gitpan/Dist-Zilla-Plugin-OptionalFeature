@@ -1,5 +1,9 @@
 Revision history for Dist-Zilla-Plugin-OptionalFeature
 
+0.003     2013-07-18 10:35:20 PDT-0700 (Karen Etheridge)
+          - a use of $` has been replaced with ${^PREMATCH}, which requires perl
+            5.9.5 (RT#86989)
+
 0.002     2013-07-16 22:31:11 PDT-0700 (Karen Etheridge)
           - name, description, and always_recommend options are now prefaced
             with dashes, just like -phase and -relationship (to avoid naming
