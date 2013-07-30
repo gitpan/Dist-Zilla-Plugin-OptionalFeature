@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Dist::Zilla::Plugin::OptionalFeature;
 {
-  $Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.003';
+  $Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.004';
 }
-# git description: v0.002-2-g3878c74
+# git description: v0.003-1-g9674fbc
 
 BEGIN {
   $Dist::Zilla::Plugin::OptionalFeature::AUTHORITY = 'cpan:ETHER';
@@ -135,6 +135,7 @@ sub metadata
     my $self = shift;
 
     return {
+        dynamic_config => 1,
         optional_features => {
             $self->name => {
                 description => $self->description,
@@ -160,7 +161,7 @@ Dist::Zilla::Plugin::OptionalFeature - Specify prerequisites for optional featur
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 SYNOPSIS
 

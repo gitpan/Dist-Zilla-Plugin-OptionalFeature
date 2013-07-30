@@ -29,8 +29,8 @@
       "develop" : {
          "requires" : {
             "Dist::Zilla" : "4.300035",
-            "Dist::Zilla::Plugin::ModuleBuildTiny" : "0",
-            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.012",
+            "Dist::Zilla::Plugin::ModuleBuildTiny" : "0.004",
+            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.014",
             "Pod::Coverage::TrustPod" : "0",
             "Test::CPAN::Changes" : "0.19",
             "Test::CPAN::Meta" : "0",
@@ -54,7 +54,6 @@
       "test" : {
          "requires" : {
             "Capture::Tiny" : "0",
-            "File::Temp" : "0",
             "Test::CheckDeps" : "0.006",
             "Test::DZil" : "0",
             "Test::Deep" : "0",
@@ -68,7 +67,7 @@
    "provides" : {
       "Dist::Zilla::Plugin::OptionalFeature" : {
          "file" : "lib/Dist/Zilla/Plugin/OptionalFeature.pm",
-         "version" : "0.003"
+         "version" : "0.004"
       }
    },
    "release_status" : "stable",
@@ -84,10 +83,10 @@
          "web" : "https://github.com/karenetheridge/Dist-Zilla-Plugin-OptionalFeature"
       }
    },
-   "version" : "0.003",
+   "version" : "0.004",
    "x_Dist_Zilla" : {
       "perl" : {
-         "version" : "5.019001"
+         "version" : "5.019002"
       },
       "plugins" : [
          {
@@ -98,7 +97,7 @@
          {
             "class" : "Dist::Zilla::Plugin::GithubMeta",
             "name" : "@Author::ETHER/GithubMeta",
-            "version" : "0.28"
+            "version" : "0.30"
          },
          {
             "class" : "Dist::Zilla::Plugin::AutoMetaResources",
@@ -136,6 +135,11 @@
             "version" : "4.300035"
          },
          {
+            "class" : "Dist::Zilla::Plugin::FileFinder::ByName",
+            "name" : "@Author::ETHER/Examples",
+            "version" : "4.300035"
+         },
+         {
             "class" : "Dist::Zilla::Plugin::Git::GatherDir",
             "name" : "@Author::ETHER/Git::GatherDir",
             "version" : "2.014"
@@ -168,7 +172,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Test::Compile",
             "name" : "@Author::ETHER/Test::Compile",
-            "version" : "2.006"
+            "version" : "2.011"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::CheckDeps",
@@ -258,7 +262,7 @@
          {
             "class" : "Dist::Zilla::Plugin::PodWeaver",
             "name" : "@Author::ETHER/PodWeaver",
-            "version" : "3.101641"
+            "version" : "3.101642"
          },
          {
             "class" : "Dist::Zilla::Plugin::NextRelease",
@@ -305,6 +309,11 @@
             "class" : "Dist::Zilla::Plugin::CopyFilesFromBuild",
             "name" : "@Author::ETHER/CopyFilesFromBuild",
             "version" : "0.103510"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Run::AfterBuild",
+            "name" : "@Author::ETHER/Run::AfterBuild",
+            "version" : "0.020"
          },
          {
             "class" : "Dist::Zilla::Plugin::RunExtraTests",
@@ -359,7 +368,7 @@
          {
             "class" : "Dist::Zilla::Plugin::GitHub::Update",
             "name" : "@Author::ETHER/GitHub::Update",
-            "version" : "0.34"
+            "version" : "0.35"
          },
          {
             "class" : "Dist::Zilla::Plugin::Git::Push",
@@ -379,7 +388,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Test::Kwalitee",
             "name" : "Test::Kwalitee",
-            "version" : "2.03"
+            "version" : "2.04"
          },
          {
             "class" : "Dist::Zilla::Plugin::FinderCode",
