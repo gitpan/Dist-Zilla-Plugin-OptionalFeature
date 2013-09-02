@@ -1,14 +1,14 @@
 use strict;
 use warnings;
 package Dist::Zilla::Plugin::OptionalFeature;
-{
-  $Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.004';
-}
-# git description: v0.003-1-g9674fbc
-
 BEGIN {
   $Dist::Zilla::Plugin::OptionalFeature::AUTHORITY = 'cpan:ETHER';
 }
+{
+  $Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.005';
+}
+# git description: v0.004-4-g903b1c5
+
 # ABSTRACT: Specify prerequisites for optional features in your dist
 
 use Moose;
@@ -134,8 +134,15 @@ sub metadata
 {
     my $self = shift;
 
+    # this might be relaxed in the future -- see
+    # https://github.com/Perl-Toolchain-Gang/cpan-meta/issues/28
+    # but this is the current v2.0 spec - regexp lifted from Test::CPAN::Meta::JSON::Version
+    $self->log_fatal('invalid syntax for optional feature name \'' .  $self->name . '\'')
+        if $self->name !~ /^([a-z][_a-z]+)$/i;
+
     return {
-        dynamic_config => 1,
+        # dynamic_config is NOT set, on purpose -- normally the CPAN client
+        # does the user interrogation, not Makefile.PL/Build.PL
         optional_features => {
             $self->name => {
                 description => $self->description,
@@ -161,7 +168,7 @@ Dist::Zilla::Plugin::OptionalFeature - Specify prerequisites for optional featur
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 SYNOPSIS
 
@@ -175,7 +182,8 @@ In your F<dist.ini>:
 
 This plugin provides a mechanism for specifying prerequisites for optional
 features in metadata, which should cause CPAN clients to interactively prompt
-you regarding these features at install time.
+you regarding these features at install time (assuming interactivity is turned
+on: e.g. C<< cpanm --interactive Foo::Bar >>).
 
 The feature I<name> and I<description> are required. The name can be extracted
 from the plugin name.

@@ -12,6 +12,7 @@ t/00-check-deps.t
 t/00-compile.t
 t/01-basic.t
 t/02-no-configure.t
+t/03-name-syntax.t
 t/corpus/dist/DZT/lib/DZT/Sample.pm
 weaver.ini
 xt/author/pod-spell.t
