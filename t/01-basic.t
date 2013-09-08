@@ -10,7 +10,7 @@ use Test::DZil;
 
 {
     my $tzil = Builder->from_config(
-        { dist_root => 't/corpus/dist/DZT' },
+        { dist_root => 't/does_not_exist' },
         {
             add_files => {
                 'source/dist.ini' => simple_ini(
@@ -33,6 +33,7 @@ use Test::DZil;
     cmp_deeply(
         $json,
         json(superhashof({
+            dynamic_config => 0,
             optional_features => {
                 FeatureName => {
                     description => 'FeatureName',
@@ -122,6 +123,7 @@ use Test::DZil;
     cmp_deeply(
         $json,
         json(superhashof({
+            dynamic_config => 0,
             optional_features => {
                 FeatureName => {
                     description => 'desc',
@@ -169,6 +171,7 @@ use Test::DZil;
     cmp_deeply(
         $json,
         json(superhashof({
+            dynamic_config => 0,
             optional_features => {
                 FeatureName => {
                     description => 'desc',
@@ -214,6 +217,7 @@ use Test::DZil;
     cmp_deeply(
         $json,
         json(superhashof({
+            dynamic_config => 0,
             optional_features => {
                 FeatureName => {
                     description => 'desc',
@@ -262,6 +266,7 @@ use Test::DZil;
     cmp_deeply(
         $json,
         json(superhashof({
+            dynamic_config => 0,
             optional_features => {
                 FeatureName => {
                     description => 'desc',

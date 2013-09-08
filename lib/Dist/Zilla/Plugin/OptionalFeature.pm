@@ -5,9 +5,9 @@ BEGIN {
   $Dist::Zilla::Plugin::OptionalFeature::AUTHORITY = 'cpan:ETHER';
 }
 {
-  $Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.005';
+  $Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.006';
 }
-# git description: v0.004-4-g903b1c5
+# git description: v0.005-8-gab7f13e
 
 # ABSTRACT: Specify prerequisites for optional features in your dist
 
@@ -34,6 +34,12 @@ has always_recommend => (
     is => 'ro', isa => Bool,
     default => 0,
     predicate => '_has_always_recommend',
+);
+
+has default => (
+    is => 'ro', isa => Bool,
+    predicate => '_has_default',
+    # NO DEFAULT
 );
 
 has _prereq_phase => (
@@ -66,10 +72,11 @@ around BUILDARGS => sub
     my @private = grep { /^_/ } keys %$args;
     confess "Invalid options: @private" if @private;
 
+    # pull these out so they don't become part of our prereq list
     my ($zilla, $plugin_name) = delete @{$args}{qw(zilla plugin_name)};
 
-    my ($feature_name, $description, $always_recommend, $phase) =
-        delete @{$args}{qw(-name -description -always_recommend -phase)};
+    my ($feature_name, $description, $always_recommend, $default, $phase) =
+        delete @{$args}{qw(-name -description -always_recommend -default -phase)};
     my ($type) = grep { defined } delete @{$args}{qw(-type -relationship)};
 
     my @other_options = grep { /^-/ } keys %$args;
@@ -101,9 +108,10 @@ around BUILDARGS => sub
         plugin_name => $plugin_name,
         defined $feature_name ? ( name => $feature_name ) : (),
         defined $description ? ( description => $description ) : (),
-        always_recommend => $always_recommend,
-        $phase ? ( _prereq_phase => $phase ) : (),
-        $type ? ( _prereq_type => $type ) : (),
+        defined $always_recommend ? ( always_recommend => $always_recommend ) : (),
+        defined $default ? ( default => $default ) : (),
+        defined $phase ? ( _prereq_phase => $phase ) : (),
+        defined $type ? ( _prereq_type => $type ) : (),
         _prereqs => $args,
     };
 };
@@ -142,10 +150,13 @@ sub metadata
 
     return {
         # dynamic_config is NOT set, on purpose -- normally the CPAN client
-        # does the user interrogation, not Makefile.PL/Build.PL
+        # does the user interrogation and merging of prereqs, not Makefile.PL/Build.PL
         optional_features => {
             $self->name => {
                 description => $self->description,
+                # we don't know which way this will/should default in the spec if omitted,
+                # so we only include it if the user explicitly sets it
+                $self->_has_default ? ( x_default => $self->default ) : (),
                 prereqs => { $self->_prereq_phase => { $self->_prereq_type => $self->_prereqs } },
             },
         },
@@ -160,7 +171,7 @@ __END__
 
 =encoding utf-8
 
-=for :stopwords Karen Etheridge irc
+=for :stopwords Karen Etheridge miyagawa irc
 
 =head1 NAME
 
@@ -168,7 +179,7 @@ Dist::Zilla::Plugin::OptionalFeature - Specify prerequisites for optional featur
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 
@@ -255,7 +266,17 @@ Defaults to the feature name, if not provided.
 If set with a true value, the prerequisites are added to the distribution's
 metadata as recommended prerequisites (e.g. L<cpanminus> will install
 recommendations with C<--with-recommends>, even when running
-non-interactively).
+non-interactively). Defaults to 0, but I recommend you turn this on.
+
+=item * C<-default>
+
+If set with a true value, compliant CPAN clients will behave as if the user
+opted to install the feature's prerequisites when running non-interactively
+(when there is no opportunity to prompt the user).
+
+Note that at the time of this feature's creation (September 2013), there is no
+compliant CPAN client yet, as it invents a new C<x_default> field in metadata
+under C<optional_feature> (thanks, miyagawa!)
 
 =item * C<-phase>
 
