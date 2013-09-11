@@ -5,9 +5,9 @@ BEGIN {
   $Dist::Zilla::Plugin::OptionalFeature::AUTHORITY = 'cpan:ETHER';
 }
 {
-  $Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.006';
+  $Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.007';
 }
-# git description: v0.005-8-gab7f13e
+# git description: v0.006-1-g87ff6b7
 
 # ABSTRACT: Specify prerequisites for optional features in your dist
 
@@ -179,7 +179,7 @@ Dist::Zilla::Plugin::OptionalFeature - Specify prerequisites for optional featur
 
 =head1 VERSION
 
-version 0.006
+version 0.007
 
 =head1 SYNOPSIS
 

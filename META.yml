@@ -14,11 +14,11 @@ build_requires:
   Test::Deep::JSON: 0
   Test::Fatal: 0
   Test::More: 0.94
-  Test::Warnings: 0
+  if: 0
 configure_requires:
-  Module::Build::Tiny: 0.026
+  Module::Build::Tiny: 0.027
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.300038, CPAN::Meta::Converter version 2.132140'
+generated_by: 'Dist::Zilla version 4.300038, CPAN::Meta::Converter version 2.132510'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -32,7 +32,7 @@ no_index:
 provides:
   Dist::Zilla::Plugin::OptionalFeature:
     file: lib/Dist/Zilla/Plugin/OptionalFeature.pm
-    version: 0.006
+    version: 0.007
 requires:
   Dist::Zilla::Role::MetaProvider: 0
   Dist::Zilla::Role::PrereqSource: 0
@@ -47,7 +47,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-OptionalFeature
   homepage: https://github.com/karenetheridge/Dist-Zilla-Plugin-OptionalFeature
   repository: https://github.com/karenetheridge/Dist-Zilla-Plugin-OptionalFeature.git
-version: 0.006
+version: 0.007
 x_Dist_Zilla:
   perl:
     version: 5.019003
@@ -59,11 +59,11 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       name: '@Author::ETHER/build'
-      version: 0.003
+      version: 0.004
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       name: '@Author::ETHER/release'
-      version: 0.003
+      version: 0.004
     -
       class: Dist::Zilla::Plugin::ExecDir
       name: '@Author::ETHER/ExecDir'
@@ -110,7 +110,7 @@ x_Dist_Zilla:
             - ':ExecFiles'
             - '@Author::ETHER/Examples'
       name: '@Author::ETHER/Test::Compile'
-      version: 2.027
+      version: 2.030
     -
       class: Dist::Zilla::Plugin::Test::CheckDeps
       name: '@Author::ETHER/Test::CheckDeps'
@@ -158,7 +158,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::PodSpelling
       name: '@Author::ETHER/Test::PodSpelling'
-      version: 2.006000
+      version: 2.006001
     -
       class: Dist::Zilla::Plugin::Test::Pod::No404s
       name: '@Author::ETHER/Test::Pod::No404s'
@@ -198,7 +198,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::GithubMeta
       name: '@Author::ETHER/GithubMeta'
-      version: 0.36
+      version: 0.38
     -
       class: Dist::Zilla::Plugin::AutoMetaResources
       name: '@Author::ETHER/AutoMetaResources'
@@ -250,7 +250,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::ModuleBuildTiny
       name: '@Author::ETHER/ModuleBuildTiny'
-      version: 0.004
+      version: 0.005
     -
       class: Dist::Zilla::Plugin::InstallGuide
       name: '@Author::ETHER/InstallGuide'
@@ -318,6 +318,14 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::ConfirmRelease
       name: '@Author::ETHER/ConfirmRelease'
+      version: 4.300038
+    -
+      class: Dist::Zilla::Plugin::Prereqs
+      config:
+        Dist::Zilla::Plugin::Prereqs:
+          phase: develop
+          type: requires
+      name: DevelopRequires
       version: 4.300038
     -
       class: Dist::Zilla::Plugin::FinderCode
