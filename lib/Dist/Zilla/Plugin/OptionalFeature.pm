@@ -1,14 +1,14 @@
 use strict;
 use warnings;
 package Dist::Zilla::Plugin::OptionalFeature;
+{
+  $Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.008';
+}
+# git description: v0.007-5-g6fd7022
+
 BEGIN {
   $Dist::Zilla::Plugin::OptionalFeature::AUTHORITY = 'cpan:ETHER';
 }
-{
-  $Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.007';
-}
-# git description: v0.006-1-g87ff6b7
-
 # ABSTRACT: Specify prerequisites for optional features in your dist
 
 use Moose;
@@ -169,7 +169,7 @@ __END__
 
 =pod
 
-=encoding utf-8
+=encoding UTF-8
 
 =for :stopwords Karen Etheridge miyagawa irc
 
@@ -179,7 +179,7 @@ Dist::Zilla::Plugin::OptionalFeature - Specify prerequisites for optional featur
 
 =head1 VERSION
 
-version 0.007
+version 0.008
 
 =head1 SYNOPSIS
 
