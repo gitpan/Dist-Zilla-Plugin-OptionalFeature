@@ -1,15 +1,13 @@
 use strict;
 use warnings;
 package Dist::Zilla::Plugin::OptionalFeature;
-{
-  $Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.008';
-}
-# git description: v0.007-5-g6fd7022
-
 BEGIN {
   $Dist::Zilla::Plugin::OptionalFeature::AUTHORITY = 'cpan:ETHER';
 }
+# git description: v0.008-4-g1498d0f
+$Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.009';
 # ABSTRACT: Specify prerequisites for optional features in your dist
+# vim: set ts=8 sw=4 tw=78 et :
 
 use Moose;
 with
@@ -116,6 +114,24 @@ around BUILDARGS => sub
     };
 };
 
+around dump_config => sub
+{
+    my $orig = shift;
+    my $self = shift;
+
+    my $config = $self->$orig;
+
+    $config->{'' . __PACKAGE__} = {
+        (map { defined $self->$_ ? ( '-' . $_ => $self->$_ ) : () }
+            qw(name description always_recommend default)),
+        '-phase' => $self->_prereq_phase,
+        '-type' => $self->_prereq_type,
+        prereqs => $self->_prereqs,
+    };
+
+    return $config;
+};
+
 sub register_prereqs
 {
     my $self = shift;
@@ -179,7 +195,7 @@ Dist::Zilla::Plugin::OptionalFeature - Specify prerequisites for optional featur
 
 =head1 VERSION
 
-version 0.008
+version 0.009
 
 =head1 SYNOPSIS
 
