@@ -8,8 +8,8 @@ use warnings;
 
 BEGIN {
 my %configure_requires = (
-    'Module::Build::Tiny' => '0.030',
     'ExtUtils::MakeMaker' => '6.30',
+    'Module::Build::Tiny' => '0.030',
 );
 
 my @missing = grep {
@@ -91,18 +91,23 @@ my %WriteMakefileArgs = (
   },
   "TEST_REQUIRES" => {
     "Config::MVP::Reader::INI" => "2.101461",
+    "Exporter" => 0,
     "ExtUtils::MakeMaker" => 0,
     "File::Spec::Functions" => 0,
+    "JSON::Any" => 0,
     "List::Util" => 0,
     "Test::CPAN::Meta::JSON::Version" => 0,
+    "Test::CPAN::Meta::YAML::Version" => 0,
     "Test::DZil" => 0,
     "Test::Deep" => 0,
     "Test::Deep::JSON" => 0,
     "Test::Fatal" => 0,
     "Test::More" => 0,
-    "if" => 0
+    "YAML::Tiny" => 0,
+    "if" => 0,
+    "lib" => 0
   },
-  "VERSION" => "0.009",
+  "VERSION" => "0.010",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -113,19 +118,24 @@ my %FallbackPrereqs = (
   "Config::MVP::Reader::INI" => "2.101461",
   "Dist::Zilla::Role::MetaProvider" => 0,
   "Dist::Zilla::Role::PrereqSource" => 0,
+  "Exporter" => 0,
   "ExtUtils::MakeMaker" => 0,
   "File::Spec::Functions" => 0,
+  "JSON::Any" => 0,
   "List::Util" => 0,
   "Moose" => 0,
   "MooseX::Types::Common::String" => 0,
   "MooseX::Types::Moose" => 0,
   "Test::CPAN::Meta::JSON::Version" => 0,
+  "Test::CPAN::Meta::YAML::Version" => 0,
   "Test::DZil" => 0,
   "Test::Deep" => 0,
   "Test::Deep::JSON" => 0,
   "Test::Fatal" => 0,
   "Test::More" => 0,
+  "YAML::Tiny" => 0,
   "if" => 0,
+  "lib" => 0,
   "namespace::autoclean" => 0,
   "strict" => 0,
   "warnings" => 0

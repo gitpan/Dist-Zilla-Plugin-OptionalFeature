@@ -17,20 +17,25 @@ my @modules = qw(
   Config::MVP::Reader::INI
   Dist::Zilla::Role::MetaProvider
   Dist::Zilla::Role::PrereqSource
+  Exporter
   ExtUtils::MakeMaker
   File::Spec::Functions
+  JSON::Any
   List::Util
   Module::Build::Tiny
   Moose
   MooseX::Types::Common::String
   MooseX::Types::Moose
   Test::CPAN::Meta::JSON::Version
+  Test::CPAN::Meta::YAML::Version
   Test::DZil
   Test::Deep
   Test::Deep::JSON
   Test::Fatal
   Test::More
+  YAML::Tiny
   if
+  lib
   namespace::autoclean
   perl
   strict
