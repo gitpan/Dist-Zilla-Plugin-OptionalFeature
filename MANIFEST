@@ -17,6 +17,7 @@ t/01-basic.t
 t/02-no-configure.t
 t/03-name-syntax.t
 t/04-default.t
+t/05-require-develop.t
 t/lib/SpecCompliant.pm
 weaver.ini
 xt/author/00-compile.t

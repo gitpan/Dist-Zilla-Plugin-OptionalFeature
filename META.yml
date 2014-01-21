@@ -21,7 +21,7 @@ build_requires:
   lib: 0
 configure_requires:
   ExtUtils::MakeMaker: 6.30
-  Module::Build::Tiny: 0.030
+  Module::Build::Tiny: 0.033
 dynamic_config: 0
 generated_by: 'Dist::Zilla version 5.012, CPAN::Meta::Converter version 2.133380'
 license: perl
@@ -38,7 +38,7 @@ no_index:
 provides:
   Dist::Zilla::Plugin::OptionalFeature:
     file: lib/Dist/Zilla/Plugin/OptionalFeature.pm
-    version: 0.010
+    version: 0.011
 requires:
   Dist::Zilla::Role::MetaProvider: 0
   Dist::Zilla::Role::PrereqSource: 0
@@ -55,7 +55,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-OptionalFeature
   homepage: https://github.com/karenetheridge/Dist-Zilla-Plugin-OptionalFeature
   repository: https://github.com/karenetheridge/Dist-Zilla-Plugin-OptionalFeature.git
-version: 0.010
+version: 0.011
 x_Dist_Zilla:
   perl:
     version: 5.019007
@@ -216,14 +216,6 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::Test::Portability
       name: '@Author::ETHER/Test::Portability'
       version: 2.000005
-    -
-      class: Dist::Zilla::Plugin::PruneCruft
-      name: '@Author::ETHER/PruneCruft'
-      version: 5.012
-    -
-      class: Dist::Zilla::Plugin::ManifestSkip
-      name: '@Author::ETHER/ManifestSkip'
-      version: 5.012
     -
       class: Dist::Zilla::Plugin::Git::Describe
       name: '@Author::ETHER/Git::Describe'
