@@ -4,8 +4,8 @@ package Dist::Zilla::Plugin::OptionalFeature;
 BEGIN {
   $Dist::Zilla::Plugin::OptionalFeature::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.010-1-gd50fb3b
-$Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.011';
+# git description: v0.011-3-gc3e5eb0
+$Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.012';
 # ABSTRACT: Specify prerequisites for optional features in your dist
 # vim: set ts=8 sw=4 tw=78 et :
 
@@ -203,7 +203,7 @@ Dist::Zilla::Plugin::OptionalFeature - Specify prerequisites for optional featur
 
 =head1 VERSION
 
-version 0.011
+version 0.012
 
 =head1 SYNOPSIS
 

@@ -19,9 +19,10 @@ build_requires:
   YAML::Tiny: 0
   if: 0
   lib: 0
+  version: 0
 configure_requires:
   ExtUtils::MakeMaker: 6.30
-  Module::Build::Tiny: 0.033
+  Module::Build::Tiny: 0.034
 dynamic_config: 0
 generated_by: 'Dist::Zilla version 5.012, CPAN::Meta::Converter version 2.133380'
 license: perl
@@ -38,7 +39,7 @@ no_index:
 provides:
   Dist::Zilla::Plugin::OptionalFeature:
     file: lib/Dist/Zilla/Plugin/OptionalFeature.pm
-    version: 0.011
+    version: 0.012
 requires:
   Dist::Zilla::Role::MetaProvider: 0
   Dist::Zilla::Role::PrereqSource: 0
@@ -55,7 +56,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-OptionalFeature
   homepage: https://github.com/karenetheridge/Dist-Zilla-Plugin-OptionalFeature
   repository: https://github.com/karenetheridge/Dist-Zilla-Plugin-OptionalFeature.git
-version: 0.011
+version: 0.012
 x_Dist_Zilla:
   perl:
     version: 5.019007
@@ -131,7 +132,7 @@ x_Dist_Zilla:
           dist: Dist-Zilla-PluginBundle-Author-ETHER
           encoding: UTF-8
           source_filename: CONTRIBUTING
-      name: '@Author::ETHER/GenerateFile::ShareDir'
+      name: '@Author::ETHER/generate CONTRIBUTING'
       version: 0.005
     -
       class: Dist::Zilla::Plugin::Test::Compile
@@ -211,7 +212,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::ReportPrereqs
       name: '@Author::ETHER/Test::ReportPrereqs'
-      version: 0.012
+      version: 0.013
     -
       class: Dist::Zilla::Plugin::Test::Portability
       name: '@Author::ETHER/Test::Portability'
@@ -386,7 +387,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::MakeMaker::Fallback
       name: '@Author::ETHER/MakeMaker::Fallback'
-      version: 0.005
+      version: 0.006
     -
       class: Dist::Zilla::Plugin::ModuleBuildTiny
       name: '@Author::ETHER/ModuleBuildTiny'
@@ -397,8 +398,12 @@ x_Dist_Zilla:
       version: 1.200002
     -
       class: Dist::Zilla::Plugin::CheckSelfDependency
+      config:
+        Dist::Zilla::Plugin::CheckSelfDependency:
+          finder:
+            - ':InstallModules'
       name: '@Author::ETHER/CheckSelfDependency'
-      version: 0.006
+      version: 0.007
     -
       class: Dist::Zilla::Plugin::Run::AfterBuild
       name: '@Author::ETHER/Run::AfterBuild'
@@ -410,11 +415,11 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts
       name: '@Author::ETHER/Git::CheckFor::MergeConflicts'
-      version: 0.008
+      version: 0.009
     -
       class: Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch
       name: '@Author::ETHER/Git::CheckFor::CorrectBranch'
-      version: 0.008
+      version: 0.009
     -
       class: Dist::Zilla::Plugin::Git::Remote::Check
       name: '@Author::ETHER/Git::Remote::Check'

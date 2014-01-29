@@ -1,5 +1,9 @@
 Revision history for Dist-Zilla-Plugin-OptionalFeature
 
+0.012     2014-01-29 04:09:38Z
+          - report more installed versions, as an attempt to debug some odd
+            cpantesters failures
+
 0.011     2014-01-21 04:10:42Z
           - new -require_develop option (which has always defaulted to true)
 
