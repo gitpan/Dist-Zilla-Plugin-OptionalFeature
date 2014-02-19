@@ -4,8 +4,8 @@ package Dist::Zilla::Plugin::OptionalFeature;
 BEGIN {
   $Dist::Zilla::Plugin::OptionalFeature::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.011-3-gc3e5eb0
-$Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.012';
+# git description: v0.012-2-g108d168
+$Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.013';
 # ABSTRACT: Specify prerequisites for optional features in your dist
 # vim: set ts=8 sw=4 tw=78 et :
 
@@ -63,7 +63,7 @@ has _prereqs => (
     default => sub { {} },
 );
 
-sub mvp_aliases { return { -relationship => '-type' } }
+sub mvp_aliases { +{ -relationship => '-type' } }
 
 around BUILDARGS => sub
 {
@@ -127,7 +127,7 @@ around dump_config => sub
 
     my $config = $self->$orig;
 
-    $config->{'' . __PACKAGE__} = {
+    $config->{+__PACKAGE__} = {
         # FIXME: YAML::Tiny does not handle leading - properly yet
         # (map { defined $self->$_ ? ( '-' . $_ => $self->$_ ) : () }
         (map { defined $self->$_ ? ( $_ => $self->$_ ) : () }
@@ -203,7 +203,7 @@ Dist::Zilla::Plugin::OptionalFeature - Specify prerequisites for optional featur
 
 =head1 VERSION
 
-version 0.012
+version 0.013
 
 =head1 SYNOPSIS
 

@@ -50,15 +50,15 @@ my $static_prereqs = do { my $x = {
        'configure' => {
                         'requires' => {
                                         'ExtUtils::MakeMaker' => '6.30',
-                                        'Module::Build::Tiny' => '0.034'
+                                        'Module::Build::Tiny' => '0.035'
                                       }
                       },
        'develop' => {
                       'recommends' => {
-                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.049'
+                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.050'
                                       },
                       'requires' => {
-                                      'Dist::Zilla' => '5.012',
+                                      'Dist::Zilla' => '5.013',
                                       'Dist::Zilla::Plugin::GitHub::Update' => '0',
                                       'Dist::Zilla::Plugin::GithubMeta' => '0',
                                       'Dist::Zilla::Plugin::MakeMaker::Fallback' => '0',
@@ -104,7 +104,7 @@ my $static_prereqs = do { my $x = {
                                    'Exporter' => '0',
                                    'ExtUtils::MakeMaker' => '0',
                                    'File::Spec::Functions' => '0',
-                                   'JSON::Any' => '0',
+                                   'JSON::Any' => '1.31',
                                    'List::Util' => '0',
                                    'Test::CPAN::Meta::JSON::Version' => '0',
                                    'Test::CPAN::Meta::YAML::Version' => '0',
