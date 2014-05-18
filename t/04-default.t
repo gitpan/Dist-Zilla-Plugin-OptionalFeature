@@ -6,13 +6,14 @@ use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
 use Test::Deep;
 use Test::Deep::JSON;
 use Test::DZil;
+use Path::Tiny;
 
 {
     my $tzil = Builder->from_config(
         { dist_root => 't/does_not_exist' },
         {
             add_files => {
-                'source/dist.ini' => simple_ini(
+                path(qw(source dist.ini)) => simple_ini(
                     [ GatherDir => ],
                     [ MetaJSON  => ],
                     [ Prereqs => TestRequires => { Tester => 0 } ],   # so we have prereqs to test for
@@ -28,7 +29,7 @@ use Test::DZil;
     );
 
     $tzil->build;
-    my $json = $tzil->slurp_file('build/META.json');
+    my $json = path($tzil->tempdir, qw(build META.json))->slurp_raw;
 
     cmp_deeply(
         $json,
@@ -60,7 +61,7 @@ use Test::DZil;
         { dist_root => 't/does_not_exist' },
         {
             add_files => {
-                'source/dist.ini' => simple_ini(
+                path(qw(source dist.ini)) => simple_ini(
                     [ GatherDir => ],
                     [ MetaJSON  => ],
                     [ Prereqs => TestRequires => { Tester => 0 } ],   # so we have prereqs to test for
@@ -76,7 +77,7 @@ use Test::DZil;
     );
 
     $tzil->build;
-    my $json = $tzil->slurp_file('build/META.json');
+    my $json = path($tzil->tempdir, qw(build META.json))->slurp_raw;
 
     cmp_deeply(
         $json,

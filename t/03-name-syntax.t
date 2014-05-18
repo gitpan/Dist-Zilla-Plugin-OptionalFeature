@@ -7,6 +7,7 @@ use Test::Fatal;
 use Test::Deep;
 use Test::CPAN::Meta::JSON::Version;
 use Test::DZil;
+use Path::Tiny;
 
 use Config::MVP::Reader::INI 2.101461;  # for spaces in section names
 
@@ -15,7 +16,7 @@ use Config::MVP::Reader::INI 2.101461;  # for spaces in section names
         { dist_root => 't/does_not_exist' },
         {
             add_files => {
-                'source/dist.ini' => simple_ini(
+                path(qw(source dist.ini)) => simple_ini(
                     [ GatherDir => ],
                     [ MetaJSON  => ],
                     [ OptionalFeature => 'Feature Name' => {

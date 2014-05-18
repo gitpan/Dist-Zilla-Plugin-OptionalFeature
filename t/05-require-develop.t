@@ -3,10 +3,10 @@ use warnings FATAL => 'all';
 
 use Test::More;
 use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
-use Test::Fatal;
 use Test::Deep;
 use Test::Deep::JSON;
 use Test::DZil;
+use Path::Tiny;
 
 use lib 't/lib';
 use SpecCompliant;
@@ -16,7 +16,7 @@ use SpecCompliant;
         { dist_root => 't/corpus/dist/DZT' },
         {
             add_files => {
-                'source/dist.ini' => simple_ini(
+                path(qw(source dist.ini)) => simple_ini(
                     [ GatherDir => ],
                     [ MetaConfig => ],
                     [ MetaYAML => ],
@@ -34,7 +34,7 @@ use SpecCompliant;
     );
 
     $tzil->build;
-    my $json = $tzil->slurp_file('build/META.json');
+    my $json = path($tzil->tempdir, qw(build META.json))->slurp_raw;
 
     cmp_deeply(
         $json,

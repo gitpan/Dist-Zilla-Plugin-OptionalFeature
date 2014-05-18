@@ -5,6 +5,7 @@ use Test::More;
 use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
 use Test::Fatal;
 use Test::DZil;
+use Path::Tiny;
 
 {
     like( exception {
@@ -12,7 +13,7 @@ use Test::DZil;
             { dist_root => 't/does_not_exist' },
             {
                 add_files => {
-                    'source/dist.ini' => simple_ini(
+                    path(qw(source dist.ini)) => simple_ini(
                         [ GatherDir => ],
                         [ MetaJSON  => ],
                         [ Prereqs => TestRequires => { Tester => 0 } ],   # so we have prereqs to test for

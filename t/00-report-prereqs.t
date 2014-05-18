@@ -49,22 +49,22 @@ my %exclude = map {; $_ => 1 } qw(
 my $static_prereqs = do { my $x = {
        'configure' => {
                         'requires' => {
-                                        'ExtUtils::MakeMaker' => '6.30',
-                                        'Module::Build::Tiny' => '0.035'
+                                        'ExtUtils::MakeMaker' => '6.30'
                                       }
                       },
        'develop' => {
                       'recommends' => {
-                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.050'
+                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.063'
                                       },
                       'requires' => {
-                                      'Dist::Zilla' => '5.013',
+                                      'Dist::Zilla' => '5.017',
+                                      'Dist::Zilla::Plugin::DynamicPrereqs' => '0',
                                       'Dist::Zilla::Plugin::GitHub::Update' => '0',
                                       'Dist::Zilla::Plugin::GithubMeta' => '0',
-                                      'Dist::Zilla::Plugin::MakeMaker::Fallback' => '0',
+                                      'Dist::Zilla::Plugin::MakeMaker' => '0',
                                       'Dist::Zilla::Plugin::MetaResources' => '0',
-                                      'Dist::Zilla::Plugin::ModuleBuildTiny' => '0.004',
                                       'Dist::Zilla::Plugin::Prereqs' => '0',
+                                      'Dist::Zilla::Plugin::Test::CleanNamespaces' => '0',
                                       'Dist::Zilla::PluginBundle::Author::ETHER' => '0.019',
                                       'File::Spec' => '0',
                                       'IO::Handle' => '0',
@@ -72,7 +72,7 @@ my $static_prereqs = do { my $x = {
                                       'Pod::Coverage::TrustPod' => '0',
                                       'Test::CPAN::Changes' => '0.19',
                                       'Test::CPAN::Meta' => '0',
-                                      'Test::CleanNamespaces' => '0',
+                                      'Test::CleanNamespaces' => '>= 0.04, != 0.06',
                                       'Test::Kwalitee' => '1.12',
                                       'Test::More' => '0.94',
                                       'Test::NoTabs' => '0',
@@ -104,8 +104,9 @@ my $static_prereqs = do { my $x = {
                                    'Exporter' => '0',
                                    'ExtUtils::MakeMaker' => '0',
                                    'File::Spec::Functions' => '0',
-                                   'JSON::Any' => '1.31',
+                                   'JSON::MaybeXS' => '0',
                                    'List::Util' => '0',
+                                   'Path::Tiny' => '0',
                                    'Test::CPAN::Meta::JSON::Version' => '0',
                                    'Test::CPAN::Meta::YAML::Version' => '0',
                                    'Test::DZil' => '0',

@@ -4,9 +4,9 @@ package Dist::Zilla::Plugin::OptionalFeature;
 BEGIN {
   $Dist::Zilla::Plugin::OptionalFeature::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.012-2-g108d168
-$Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.013';
-# ABSTRACT: Specify prerequisites for optional features in your dist
+# git description: v0.013-12-gc621548
+$Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.014';
+# ABSTRACT: Specify prerequisites for optional features in your distribution
 # vim: set ts=8 sw=4 tw=78 et :
 
 use Moose;
@@ -195,21 +195,19 @@ __END__
 
 =encoding UTF-8
 
-=for :stopwords Karen Etheridge miyagawa irc
-
 =head1 NAME
 
-Dist::Zilla::Plugin::OptionalFeature - Specify prerequisites for optional features in your dist
+Dist::Zilla::Plugin::OptionalFeature - Specify prerequisites for optional features in your distribution
 
 =head1 VERSION
 
-version 0.013
+version 0.014
 
 =head1 SYNOPSIS
 
 In your F<dist.ini>:
 
-    [OptionalFeature / XS Support]
+    [OptionalFeature / XS_Support]
     -description = XS implementation (faster, requires a compiler)
     Foo::Bar::XS = 1.002
 
@@ -225,7 +223,7 @@ from the plugin name.
 
 You can specify requirements for different phases and relationships with:
 
-    [OptionalFeature / Feature name]
+    [OptionalFeature / Feature_name]
     -description = description
     -phase = test
     -relationship = requires
@@ -238,12 +236,12 @@ C<requires>.
 To specify feature requirements for multiple phases, provide them as separate
 plugin configurations (keeping the feature name and description constant):
 
-    [OptionalFeature / Feature name]
+    [OptionalFeature / Feature_name]
     -description = description
     -phase = runtime
     Foo::Bar = 0
 
-    [OptionalFeature / Feature name]
+    [OptionalFeature / Feature_name]
     -description = description
     -phase = test
     Foo::Baz = 0
@@ -261,11 +259,17 @@ The example below is equivalent to the synopsis example above, except for the
 name of the resulting plugin:
 
     [OptionalFeature]
-    -name = XS Support
+    -name = XS_Support
     -description = XS implementation (faster, requires a compiler)
     -phase = runtime
     -relationship = requires
     Foo::Bar::XS = 1.002
+
+B<NOTE>: It is advised that you only specify I<one> prerequisite for a given
+feature -- and if necessary, create a separate distribution to encapsulate the
+code needed to make that feature work (along with all of its dependencies).
+This allows external projects to declare a prerequisite not just on your
+distribution, but also a particular feature of that distribution.
 
 =for Pod::Coverage mvp_aliases metadata register_prereqs
 
@@ -305,6 +309,8 @@ If set with a true value, compliant CPAN clients will behave as if the user
 opted to install the feature's prerequisites when running non-interactively
 (when there is no opportunity to prompt the user).
 
+=for stopwords miyagawa
+
 Note that at the time of this feature's creation (September 2013), there is no
 compliant CPAN client yet, as it invents a new C<x_default> field in metadata
 under C<optional_feature> (thanks, miyagawa!)
@@ -322,6 +328,8 @@ suggests, or conflicts.
 =back
 
 =head1 SUPPORT
+
+=for stopwords irc
 
 Bugs may be submitted through L<the RT bug tracker|https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-OptionalFeature>
 (or L<bug-Dist-Zilla-Plugin-OptionalFeature@rt.cpan.org|mailto:bug-Dist-Zilla-Plugin-OptionalFeature@rt.cpan.org>).
