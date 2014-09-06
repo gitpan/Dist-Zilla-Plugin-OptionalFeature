@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-OptionalFeature
 
+0.016     2014-09-06 22:39:49Z
+          - now *properly* allowing unrecognized options (0.015)
+
 0.015     2014-09-06 07:46:34Z
           - now allowing unrecognized options, with a warning, rather than
             dying (allows proactively releasing distributions using

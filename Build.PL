@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-if (eval 'use Module::Build::Tiny 0.037; 1')
+if (eval 'use Module::Build::Tiny 0.038; 1')
 {
     print "Congratulations, your toolchain understands 'configure_requires'!\n\n";
 
@@ -12,7 +12,7 @@ if (eval 'use Module::Build::Tiny 0.037; 1')
     use warnings;
 
     use 5.009005;
-    # use Module::Build::Tiny 0.037;
+    # use Module::Build::Tiny 0.038;
     Build_PL();
 }
 else
@@ -63,14 +63,14 @@ EOW
       "build_requires" => {},
       "configure_requires" => {
         "ExtUtils::MakeMaker" => 0,
-        "Module::Build::Tiny" => "0.037"
+        "Module::Build::Tiny" => "0.038"
       },
       "dist_abstract" => "Specify prerequisites for optional features in your distribution",
       "dist_author" => [
         "Karen Etheridge <ether\@cpan.org>"
       ],
       "dist_name" => "Dist-Zilla-Plugin-OptionalFeature",
-      "dist_version" => "0.015",
+      "dist_version" => "0.016",
       "license" => "perl",
       "module_name" => "Dist::Zilla::Plugin::OptionalFeature",
       "recommends" => {},
@@ -102,6 +102,7 @@ EOW
         "Test::Deep" => 0,
         "Test::Fatal" => 0,
         "Test::More" => 0,
+        "Test::Warnings" => "0.009",
         "YAML::Tiny" => 0,
         "if" => 0,
         "lib" => 0
@@ -122,6 +123,7 @@ EOW
       "Test::Deep" => 0,
       "Test::Fatal" => 0,
       "Test::More" => 0,
+      "Test::Warnings" => "0.009",
       "YAML::Tiny" => 0,
       "if" => 0,
       "lib" => 0

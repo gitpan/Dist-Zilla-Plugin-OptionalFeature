@@ -1,8 +1,8 @@
 use strict;
 use warnings;
 package Dist::Zilla::Plugin::OptionalFeature;
-# git description: v0.014-8-g1b37803
-$Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.015';
+# git description: v0.015-1-gfde643a
+$Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.016';
 # ABSTRACT: Specify prerequisites for optional features in your distribution
 # vim: set ts=8 sw=4 tw=78 et :
 
@@ -81,7 +81,8 @@ around BUILDARGS => sub
     my ($type) = grep { defined } delete @{$args}{qw(-type -relationship)};
 
     my @other_options = grep { /^-/ } keys %$args;
-    warn "[OptionalFeature] warning: invalid option(s): @other_options" if @other_options;
+    delete @{$args}{@other_options};
+    warn "[OptionalFeature] warning: unrecognized option(s): @other_options" if @other_options;
 
     # handle magic plugin names
     if ((not $feature_name or not $phase or not $type)
@@ -197,7 +198,7 @@ Dist::Zilla::Plugin::OptionalFeature - Specify prerequisites for optional featur
 
 =head1 VERSION
 
-version 0.015
+version 0.016
 
 =head1 SYNOPSIS
 
