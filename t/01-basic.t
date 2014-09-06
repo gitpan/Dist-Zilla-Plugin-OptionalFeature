@@ -5,7 +5,6 @@ use Test::More;
 use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
 use Test::Fatal;
 use Test::Deep;
-use Test::Deep::JSON;
 use Test::DZil;
 use Path::Tiny;
 
@@ -34,11 +33,10 @@ use SpecCompliant;
     );
 
     $tzil->build;
-    my $json = path($tzil->tempdir, qw(build META.json))->slurp_raw;
 
     cmp_deeply(
-        $json,
-        json(superhashof({
+        $tzil->distmeta,
+        superhashof({
             dynamic_config => 0,
             optional_features => {
                 FeatureName => {
@@ -54,7 +52,7 @@ use SpecCompliant;
                 develop => { requires => { A => 0 } },
             },
             x_Dist_Zilla => superhashof({
-                plugins => superbagof({
+                plugins => supersetof({
                     class   => 'Dist::Zilla::Plugin::OptionalFeature',
                     name    => 'FeatureName',
                     version => Dist::Zilla::Plugin::OptionalFeature->VERSION,
@@ -71,9 +69,9 @@ use SpecCompliant;
                     },
                 }),
             }),
-        })),
+        }),
         'metadata correct when minimal config provided',
-    );
+    ) or diag 'got distmeta: ', explain $tzil->distmeta;
 
     is_valid_spec($tzil);
 }
@@ -101,11 +99,10 @@ use SpecCompliant;
     );
 
     $tzil->build;
-    my $json = $tzil->slurp_file('build/META.json');
 
     cmp_deeply(
-        $json,
-        json(superhashof({
+        $tzil->distmeta,
+        superhashof({
             dynamic_config => 0,
             optional_features => {
                 FeatureName => {    # strip phase/type as it is extracted
@@ -121,7 +118,7 @@ use SpecCompliant;
                 develop => { requires => { A => 0 } },
             },
             x_Dist_Zilla => superhashof({
-                plugins => superbagof({
+                plugins => supersetof({
                     class   => 'Dist::Zilla::Plugin::OptionalFeature',
                     name    => 'FeatureName-BuildSuggests',
                     version => Dist::Zilla::Plugin::OptionalFeature->VERSION,
@@ -138,9 +135,9 @@ use SpecCompliant;
                     },
                 }),
             }),
-        })),
+        }),
         'metadata correct when extracting feature name, phase and relationship from name',
-    );
+    ) or diag 'got distmeta: ', explain $tzil->distmeta;
 
     is_valid_spec($tzil);
 }
@@ -168,11 +165,10 @@ use SpecCompliant;
     );
 
     $tzil->build;
-    my $json = $tzil->slurp_file('build/META.json');
 
     cmp_deeply(
-        $json,
-        json(superhashof({
+        $tzil->distmeta,
+        superhashof({
             dynamic_config => 0,
             optional_features => {
                 FeatureName => {
@@ -190,7 +186,7 @@ use SpecCompliant;
                 develop => { requires => { A => 0 } }
             },
             x_Dist_Zilla => superhashof({
-                plugins => superbagof({
+                plugins => supersetof({
                     class   => 'Dist::Zilla::Plugin::OptionalFeature',
                     name    => 'FeatureName-Test',
                     version => Dist::Zilla::Plugin::OptionalFeature->VERSION,
@@ -207,9 +203,9 @@ use SpecCompliant;
                     },
                 }),
             }),
-        })),
+        }),
         'metadata correct when extracting feature name and phase from name',
-    );
+    ) or diag 'got distmeta: ', explain $tzil->distmeta;
 
     is_valid_spec($tzil);
 }
@@ -238,11 +234,10 @@ use SpecCompliant;
     );
 
     $tzil->build;
-    my $json = $tzil->slurp_file('build/META.json');
 
     cmp_deeply(
-        $json,
-        json(superhashof({
+        $tzil->distmeta,
+        superhashof({
             dynamic_config => 0,
             optional_features => {
                 FeatureName => {
@@ -258,7 +253,7 @@ use SpecCompliant;
                 develop => { requires => { A => 0 } },
             },
             x_Dist_Zilla => superhashof({
-                plugins => superbagof({
+                plugins => supersetof({
                     class   => 'Dist::Zilla::Plugin::OptionalFeature',
                     name    => 'FeatureName',
                     version => Dist::Zilla::Plugin::OptionalFeature->VERSION,
@@ -275,9 +270,9 @@ use SpecCompliant;
                     },
                 }),
             }),
-        })),
+        }),
         'metadata correct when given explicit phase',
-    );
+    ) or diag 'got distmeta: ', explain $tzil->distmeta;
 
     is_valid_spec($tzil);
 }
@@ -306,11 +301,10 @@ use SpecCompliant;
     );
 
     $tzil->build;
-    my $json = $tzil->slurp_file('build/META.json');
 
     cmp_deeply(
-        $json,
-        json(superhashof({
+        $tzil->distmeta,
+        superhashof({
             dynamic_config => 0,
             optional_features => {
                 FeatureName => {
@@ -326,7 +320,7 @@ use SpecCompliant;
                 develop => { requires => { A => 0 } },
             },
             x_Dist_Zilla => superhashof({
-                plugins => superbagof({
+                plugins => supersetof({
                     class   => 'Dist::Zilla::Plugin::OptionalFeature',
                     name    => 'FeatureName',
                     version => Dist::Zilla::Plugin::OptionalFeature->VERSION,
@@ -343,9 +337,9 @@ use SpecCompliant;
                     },
                 }),
             }),
-        })),
+        }),
         'metadata correct when given explicit phase and relationship',
-    );
+    ) or diag 'got distmeta: ', explain $tzil->distmeta;
 
     is_valid_spec($tzil);
 }
@@ -359,7 +353,6 @@ use SpecCompliant;
                     [ GatherDir => ],
                     [ MetaConfig => ],
                     [ MetaYAML => ],
-                    [ MetaJSON  => ],
                     [ Prereqs => TestRequires => { Tester => 0 } ],   # so we have prereqs to test for
                     [ OptionalFeature => 'FeatureName-Test' => {
                             -description => 'desc',
@@ -376,12 +369,12 @@ use SpecCompliant;
         },
     );
 
+    $tzil->chrome->logger->set_debug(1);
     $tzil->build;
-    my $json = $tzil->slurp_file('build/META.json');
 
     cmp_deeply(
-        $json,
-        json(superhashof({
+        $tzil->distmeta,
+        superhashof({
             dynamic_config => 0,
             optional_features => {
                 FeatureName => {
@@ -398,7 +391,7 @@ use SpecCompliant;
                 develop => { requires => { A => 0, B => 0 } },
             },
             x_Dist_Zilla => superhashof({
-                plugins => superbagof({
+                plugins => supersetof({
                     class   => 'Dist::Zilla::Plugin::OptionalFeature',
                     name    => 'FeatureName-Test',
                     version => Dist::Zilla::Plugin::OptionalFeature->VERSION,
@@ -431,9 +424,12 @@ use SpecCompliant;
                     },
                 }),
             }),
-        })),
+        }),
         'metadata is merged from two plugins',
-    );
+    ) or diag 'got distmeta: ', explain $tzil->distmeta;
+
+    diag 'got log messages: ', explain $tzil->log_messages
+        if not Test::Builder->new->is_passing;
 }
 
 {
@@ -444,7 +440,6 @@ use SpecCompliant;
                 add_files => {
                     path(qw(source dist.ini)) => simple_ini(
                         [ GatherDir => ],
-                        [ MetaJSON  => ],
                         [ Prereqs => TestRequires => { Tester => 0 } ],   # so we have prereqs to test for
                         [ OptionalFeature => FeatureName => {
                                 _prereq_phase => 'test',

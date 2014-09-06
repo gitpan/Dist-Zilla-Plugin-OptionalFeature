@@ -4,7 +4,6 @@ use warnings FATAL => 'all';
 use Test::More;
 use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
 use Test::Deep;
-use Test::Deep::JSON;
 use Test::DZil;
 use Path::Tiny;
 
@@ -15,7 +14,6 @@ use Path::Tiny;
             add_files => {
                 path(qw(source dist.ini)) => simple_ini(
                     [ GatherDir => ],
-                    [ MetaJSON  => ],
                     [ Prereqs => TestRequires => { Tester => 0 } ],   # so we have prereqs to test for
                     [ OptionalFeature => FeatureName => {
                             -default => 1,
@@ -28,12 +26,12 @@ use Path::Tiny;
         },
     );
 
+    $tzil->chrome->logger->set_debug(1);
     $tzil->build;
-    my $json = path($tzil->tempdir, qw(build META.json))->slurp_raw;
 
     cmp_deeply(
-        $json,
-        json(superhashof({
+        $tzil->distmeta,
+        superhashof({
             dynamic_config => 0,
             optional_features => {
                 FeatureName => {
@@ -49,9 +47,12 @@ use Path::Tiny;
                 # no test recommendations
                 develop => { requires => { A => 0 } },
             },
-        })),
+        }),
         'metadata correct when -default is explicitly set to true',
-    );
+    ) or diag 'got distmeta: ', explain $tzil->distmeta;
+
+    diag 'got log messages: ', explain $tzil->log_messages
+        if not Test::Builder->new->is_passing;
 }
 
 {
@@ -63,7 +64,6 @@ use Path::Tiny;
             add_files => {
                 path(qw(source dist.ini)) => simple_ini(
                     [ GatherDir => ],
-                    [ MetaJSON  => ],
                     [ Prereqs => TestRequires => { Tester => 0 } ],   # so we have prereqs to test for
                     [ OptionalFeature => FeatureName => {
                             -default => 0,
@@ -76,12 +76,12 @@ use Path::Tiny;
         },
     );
 
+    $tzil->chrome->logger->set_debug(1);
     $tzil->build;
-    my $json = path($tzil->tempdir, qw(build META.json))->slurp_raw;
 
     cmp_deeply(
-        $json,
-        json(superhashof({
+        $tzil->distmeta,
+        superhashof({
             dynamic_config => 0,
             optional_features => {
                 FeatureName => {
@@ -97,9 +97,12 @@ use Path::Tiny;
                 # no test recommendations
                 develop => { requires => { A => 0 } },
             },
-        })),
+        }),
         'metadata correct when -default is explicitly set to false',
     );
+
+    diag 'got log messages: ', explain $tzil->log_messages
+        if not Test::Builder->new->is_passing;
 }
 
 done_testing;

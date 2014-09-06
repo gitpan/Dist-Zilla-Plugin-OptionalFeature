@@ -1,5 +1,10 @@
 Revision history for Dist-Zilla-Plugin-OptionalFeature
 
+0.015     2014-09-06 07:46:34Z
+          - now allowing unrecognized options, with a warning, rather than
+            dying (allows proactively releasing distributions using
+            not-yet-implemented options)
+
 0.014     2014-05-18 05:04:39Z
           - fix examples to use working code, that doesn't violate naming
             constraints for features (RT#94130)

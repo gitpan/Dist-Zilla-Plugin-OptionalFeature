@@ -1,11 +1,8 @@
 use strict;
 use warnings;
 package Dist::Zilla::Plugin::OptionalFeature;
-BEGIN {
-  $Dist::Zilla::Plugin::OptionalFeature::AUTHORITY = 'cpan:ETHER';
-}
-# git description: v0.013-12-gc621548
-$Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.014';
+# git description: v0.014-8-g1b37803
+$Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.015';
 # ABSTRACT: Specify prerequisites for optional features in your distribution
 # vim: set ts=8 sw=4 tw=78 et :
 
@@ -16,6 +13,7 @@ with
 
 use MooseX::Types::Moose qw(HashRef Bool);
 use MooseX::Types::Common::String 'NonEmptySimpleStr';
+use Carp 'confess';
 use namespace::autoclean;
 
 has name => (
@@ -83,7 +81,7 @@ around BUILDARGS => sub
     my ($type) = grep { defined } delete @{$args}{qw(-type -relationship)};
 
     my @other_options = grep { /^-/ } keys %$args;
-    confess "invalid option(s): @other_options" if @other_options;
+    warn "[OptionalFeature] warning: invalid option(s): @other_options" if @other_options;
 
     # handle magic plugin names
     if ((not $feature_name or not $phase or not $type)
@@ -122,9 +120,7 @@ around BUILDARGS => sub
 
 around dump_config => sub
 {
-    my $orig = shift;
-    my $self = shift;
-
+    my ($orig, $self) = @_;
     my $config = $self->$orig;
 
     $config->{+__PACKAGE__} = {
@@ -201,7 +197,7 @@ Dist::Zilla::Plugin::OptionalFeature - Specify prerequisites for optional featur
 
 =head1 VERSION
 
-version 0.014
+version 0.015
 
 =head1 SYNOPSIS
 
