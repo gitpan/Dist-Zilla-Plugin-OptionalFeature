@@ -20,10 +20,11 @@ use SpecCompliant;
                     [ GatherDir => ],
                     [ MetaConfig => ],
                     [ MetaYAML => ],
-                    [ MetaJSON  => ],
+                    [ MetaJSON => ],
                     [ Prereqs => TestRequires => { Tester => 0 } ],   # so we have prereqs to test for
                     [ OptionalFeature => FeatureName => {
                             # use default description, phase, type
+                            -prompt => 0,
                             A => 0,
                         }
                     ],
@@ -62,6 +63,7 @@ use SpecCompliant;
                             description => 'FeatureName',
                             always_recommend => 0,
                             require_develop => 1,
+                            prompt => 0,
                             phase => 'runtime',
                             type => 'requires',
                             prereqs => { A => 0 },
@@ -74,6 +76,9 @@ use SpecCompliant;
     ) or diag 'got distmeta: ', explain $tzil->distmeta;
 
     is_valid_spec($tzil);
+
+    diag 'got log messages: ', explain $tzil->log_messages
+        if not Test::Builder->new->is_passing;
 }
 
 {
@@ -85,7 +90,7 @@ use SpecCompliant;
                     [ GatherDir => ],
                     [ MetaConfig => ],
                     [ MetaYAML => ],
-                    [ MetaJSON  => ],
+                    [ MetaJSON => ],
                     [ Prereqs => TestRequires => { Tester => 0 } ],   # so we have prereqs to test for
                     [ OptionalFeature => 'FeatureName-BuildSuggests' => {
                             -description => 'desc',
@@ -128,6 +133,7 @@ use SpecCompliant;
                             description => 'desc',
                             always_recommend => 1,
                             require_develop => 1,
+                            prompt => 0,
                             phase => 'build',
                             type => 'suggests',
                             prereqs => { A => 0 },
@@ -140,6 +146,9 @@ use SpecCompliant;
     ) or diag 'got distmeta: ', explain $tzil->distmeta;
 
     is_valid_spec($tzil);
+
+    diag 'got log messages: ', explain $tzil->log_messages
+        if not Test::Builder->new->is_passing;
 }
 
 {
@@ -151,11 +160,12 @@ use SpecCompliant;
                     [ GatherDir => ],
                     [ MetaConfig => ],
                     [ MetaYAML => ],
-                    [ MetaJSON  => ],
+                    [ MetaJSON => ],
                     [ Prereqs => TestRequires => { Tester => 0 } ],   # so we have prereqs to test for
                     [ OptionalFeature => 'FeatureName-Test' => {
                             -description => 'desc',
                             -always_recommend => 1,
+                            -prompt => 0,
                             A => 0,
                         }
                     ],
@@ -196,6 +206,7 @@ use SpecCompliant;
                             description => 'desc',
                             always_recommend => 1,
                             require_develop => 1,
+                            prompt => 0,
                             phase => 'test',
                             type => 'requires',
                             prereqs => { A => 0 },
@@ -208,6 +219,9 @@ use SpecCompliant;
     ) or diag 'got distmeta: ', explain $tzil->distmeta;
 
     is_valid_spec($tzil);
+
+    diag 'got log messages: ', explain $tzil->log_messages
+        if not Test::Builder->new->is_passing;
 }
 
 {
@@ -219,12 +233,12 @@ use SpecCompliant;
                     [ GatherDir => ],
                     [ MetaConfig => ],
                     [ MetaYAML => ],
-                    [ MetaJSON  => ],
+                    [ MetaJSON => ],
                     [ Prereqs => TestRequires => { Tester => 0 } ],   # so we have prereqs to test for
                     [ OptionalFeature => FeatureName => {
                             -description => 'desc',
                             -phase => 'test',
-                            # use default relationship
+                            -type => 'recommends',
                             A => 0,
                         }
                     ],
@@ -243,7 +257,7 @@ use SpecCompliant;
                 FeatureName => {
                     description => 'desc',
                     prereqs => {
-                        test => { requires => { A => 0 } },
+                        test => { recommends => { A => 0 } },
                     },
                 },
             },
@@ -263,8 +277,9 @@ use SpecCompliant;
                             description => 'desc',
                             always_recommend => 0,
                             require_develop => 1,
+                            prompt => 0,
                             phase => 'test',
-                            type => 'requires',
+                            type => 'recommends',
                             prereqs => { A => 0 },
                         },
                     },
@@ -275,6 +290,9 @@ use SpecCompliant;
     ) or diag 'got distmeta: ', explain $tzil->distmeta;
 
     is_valid_spec($tzil);
+
+    diag 'got log messages: ', explain $tzil->log_messages
+        if not Test::Builder->new->is_passing;
 }
 
 {
@@ -286,7 +304,7 @@ use SpecCompliant;
                     [ GatherDir => ],
                     [ MetaConfig => ],
                     [ MetaYAML => ],
-                    [ MetaJSON  => ],
+                    [ MetaJSON => ],
                     [ Prereqs => TestRequires => { Tester => 0 } ],   # so we have prereqs to test for
                     [ OptionalFeature => FeatureName => {
                             -description => 'desc',
@@ -330,6 +348,7 @@ use SpecCompliant;
                             description => 'desc',
                             always_recommend => 0,
                             require_develop => 1,
+                            prompt => 0,
                             phase => 'test',
                             type => 'suggests',
                             prereqs => { A => 0 },
@@ -342,6 +361,9 @@ use SpecCompliant;
     ) or diag 'got distmeta: ', explain $tzil->distmeta;
 
     is_valid_spec($tzil);
+
+    diag 'got log messages: ', explain $tzil->log_messages
+        if not Test::Builder->new->is_passing;
 }
 
 {
@@ -353,14 +375,17 @@ use SpecCompliant;
                     [ GatherDir => ],
                     [ MetaConfig => ],
                     [ MetaYAML => ],
+                    [ MetaJSON => ],
                     [ Prereqs => TestRequires => { Tester => 0 } ],   # so we have prereqs to test for
                     [ OptionalFeature => 'FeatureName-Test' => {
                             -description => 'desc',
+                            -prompt => 0,
                             A => 0,
                         }
                     ],
                     [ OptionalFeature => 'FeatureName-Runtime' => {
                             -description => 'desc',
+                            -prompt => 0,
                             B => 0,
                         }
                     ],
@@ -401,6 +426,7 @@ use SpecCompliant;
                             description => 'desc',
                             always_recommend => 0,
                             require_develop => 1,
+                            prompt => 0,
                             phase => 'test',
                             type => 'requires',
                             prereqs => { A => 0 },
@@ -417,6 +443,7 @@ use SpecCompliant;
                             description => 'desc',
                             always_recommend => 0,
                             require_develop => 1,
+                            prompt => 0,
                             phase => 'runtime',
                             type => 'requires',
                             prereqs => { B => 0 },
@@ -427,6 +454,8 @@ use SpecCompliant;
         }),
         'metadata is merged from two plugins',
     ) or diag 'got distmeta: ', explain $tzil->distmeta;
+
+    is_valid_spec($tzil);
 
     diag 'got log messages: ', explain $tzil->log_messages
         if not Test::Builder->new->is_passing;
@@ -469,11 +498,12 @@ use SpecCompliant;
                         [ GatherDir => ],
                         [ MetaConfig => ],
                         [ MetaYAML => ],
-                        [ MetaJSON  => ],
+                        [ MetaJSON => ],
                         [ Prereqs => TestRequires => { Tester => 0 } ],   # so we have prereqs to test for
                         [ OptionalFeature => FeatureName => {
                                 -hello => 'oh hai',
                                 -description => 'desc',
+                                -prompt => 0,
                                 A => 0,
                             }
                         ],
@@ -515,6 +545,7 @@ use SpecCompliant;
                             description => 'desc',
                             always_recommend => 0,
                             require_develop => 1,
+                            prompt => 0,
                             phase => 'runtime',
                             type => 'requires',
                             prereqs => { A => 0 },
@@ -527,6 +558,9 @@ use SpecCompliant;
     ) or diag 'got distmeta: ', explain $tzil->distmeta;
 
     is_valid_spec($tzil);
+
+    diag 'got log messages: ', explain $tzil->log_messages
+        if not Test::Builder->new->is_passing;
 }
 
 had_no_warnings if $ENV{AUTHOR_TESTING};

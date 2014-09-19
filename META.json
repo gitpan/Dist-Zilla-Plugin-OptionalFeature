@@ -120,9 +120,11 @@
       "runtime" : {
          "requires" : {
             "Carp" : "0",
+            "Dist::Zilla::Plugin::DynamicPrereqs" : "0.007",
             "Dist::Zilla::Plugin::MetaResources" : "4.300039",
             "Dist::Zilla::Role::MetaProvider" : "0",
             "Dist::Zilla::Role::PrereqSource" : "0",
+            "Module::Runtime" : "0",
             "Moose" : "0",
             "MooseX::Types::Common::String" : "0",
             "MooseX::Types::Moose" : "0",
@@ -159,7 +161,7 @@
    "provides" : {
       "Dist::Zilla::Plugin::OptionalFeature" : {
          "file" : "lib/Dist/Zilla/Plugin/OptionalFeature.pm",
-         "version" : "0.016"
+         "version" : "0.017"
       }
    },
    "release_status" : "stable",
@@ -177,7 +179,7 @@
       "x_IRC" : "irc://irc.perl.org/#distzilla",
       "x_MailingList" : "http://dzil.org/#mailing-list"
    },
-   "version" : "0.016",
+   "version" : "0.017",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.021003"
@@ -207,7 +209,7 @@
                }
             },
             "name" : "@Author::ETHER/Git::NextVersion",
-            "version" : "2.023"
+            "version" : "2.024"
          },
          {
             "class" : "Dist::Zilla::Plugin::PromptIfStale",
@@ -223,7 +225,7 @@
                }
             },
             "name" : "@Author::ETHER/stale modules, build",
-            "version" : "0.024"
+            "version" : "0.026"
          },
          {
             "class" : "Dist::Zilla::Plugin::PromptIfStale",
@@ -237,7 +239,7 @@
                }
             },
             "name" : "@Author::ETHER/stale modules, release",
-            "version" : "0.024"
+            "version" : "0.026"
          },
          {
             "class" : "Dist::Zilla::Plugin::ExecDir",
@@ -270,7 +272,7 @@
                }
             },
             "name" : "@Author::ETHER/Git::GatherDir",
-            "version" : "2.023"
+            "version" : "2.024"
          },
          {
             "class" : "Dist::Zilla::Plugin::MetaYAML",
@@ -692,7 +694,7 @@
                }
             },
             "name" : "@Author::ETHER/ModuleBuildTiny::Fallback",
-            "version" : "0.006"
+            "version" : "0.007"
          },
          {
             "class" : "Dist::Zilla::Plugin::InstallGuide",
@@ -754,7 +756,7 @@
                }
             },
             "name" : "@Author::ETHER/initial check",
-            "version" : "2.023"
+            "version" : "2.024"
          },
          {
             "class" : "Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts",
@@ -807,7 +809,7 @@
                }
             },
             "name" : "@Author::ETHER/after tests",
-            "version" : "2.023"
+            "version" : "2.024"
          },
          {
             "class" : "Dist::Zilla::Plugin::CheckIssues",
@@ -862,7 +864,7 @@
                }
             },
             "name" : "@Author::ETHER/Git::Commit",
-            "version" : "2.023"
+            "version" : "2.024"
          },
          {
             "class" : "Dist::Zilla::Plugin::Git::Tag",
@@ -870,7 +872,7 @@
                "Dist::Zilla::Plugin::Git::Tag" : {
                   "branch" : null,
                   "signed" : 0,
-                  "tag" : "v0.016",
+                  "tag" : "v0.017",
                   "tag_format" : "v%v%t",
                   "tag_message" : "v%v%t",
                   "time_zone" : "local"
@@ -880,7 +882,7 @@
                }
             },
             "name" : "@Author::ETHER/Git::Tag",
-            "version" : "2.023"
+            "version" : "2.024"
          },
          {
             "class" : "Dist::Zilla::Plugin::GitHub::Update",
@@ -901,7 +903,7 @@
                }
             },
             "name" : "@Author::ETHER/Git::Push",
-            "version" : "2.023"
+            "version" : "2.024"
          },
          {
             "class" : "Dist::Zilla::Plugin::Run::AfterRelease",

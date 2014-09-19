@@ -19,7 +19,7 @@ use SpecCompliant;
                     [ GatherDir => ],
                     [ MetaConfig => ],
                     [ MetaYAML => ],
-                    [ MetaJSON  => ],
+                    [ MetaJSON => ],
                     [ Prereqs => TestRequires => { Tester => 0 } ],   # so we have prereqs to test for
                     [ OptionalFeature => 'FeatureName-BuildSuggests' => {
                             -description => 'desc',
@@ -62,6 +62,7 @@ use SpecCompliant;
                             description => 'desc',
                             always_recommend => 0,
                             require_develop => 0,
+                            prompt => 0,
                             phase => 'build',
                             type => 'suggests',
                             prereqs => { A => 0 },

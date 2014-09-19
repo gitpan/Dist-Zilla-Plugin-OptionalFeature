@@ -7,6 +7,9 @@ use Test::Deep;
 use Test::DZil;
 use Path::Tiny;
 
+use lib 't/lib';
+use SpecCompliant;
+
 {
     my $tzil = Builder->from_config(
         { dist_root => 't/does_not_exist' },
@@ -14,9 +17,13 @@ use Path::Tiny;
             add_files => {
                 path(qw(source dist.ini)) => simple_ini(
                     [ GatherDir => ],
+                    [ MetaConfig => ],
+                    [ MetaYAML => ],
+                    [ MetaJSON => ],
                     [ Prereqs => TestRequires => { Tester => 0 } ],   # so we have prereqs to test for
                     [ OptionalFeature => FeatureName => {
                             -default => 1,
+                            -prompt => 0,
                             # use default description, phase, type
                             A => 0,
                         }
@@ -47,9 +54,34 @@ use Path::Tiny;
                 # no test recommendations
                 develop => { requires => { A => 0 } },
             },
+            x_Dist_Zilla => superhashof({
+                plugins => supersetof({
+                    class   => 'Dist::Zilla::Plugin::OptionalFeature',
+                    name    => 'FeatureName',
+                    version => Dist::Zilla::Plugin::OptionalFeature->VERSION,
+                    config => {
+                        'Dist::Zilla::Plugin::OptionalFeature' => {
+                            name => 'FeatureName',
+                            description => 'FeatureName',
+                            always_recommend => 0,
+                            require_develop => 1,
+                            prompt => 0,
+                            default => 1,
+                            phase => 'runtime',
+                            type => 'requires',
+                            prereqs => { A => 0 },
+                        },
+                    },
+                }),
+            }),
         }),
         'metadata correct when -default is explicitly set to true',
     ) or diag 'got distmeta: ', explain $tzil->distmeta;
+
+    TODO: {
+        local $TODO = 'x_ keys should be valid everywhere!';
+        is_valid_spec($tzil);
+    }
 
     diag 'got log messages: ', explain $tzil->log_messages
         if not Test::Builder->new->is_passing;
@@ -64,9 +96,13 @@ use Path::Tiny;
             add_files => {
                 path(qw(source dist.ini)) => simple_ini(
                     [ GatherDir => ],
+                    [ MetaConfig => ],
+                    [ MetaYAML => ],
+                    [ MetaJSON => ],
                     [ Prereqs => TestRequires => { Tester => 0 } ],   # so we have prereqs to test for
                     [ OptionalFeature => FeatureName => {
                             -default => 0,
+                            -prompt => 0,
                             # use default description, phase, type
                             A => 0,
                         }
@@ -97,9 +133,34 @@ use Path::Tiny;
                 # no test recommendations
                 develop => { requires => { A => 0 } },
             },
+            x_Dist_Zilla => superhashof({
+                plugins => supersetof({
+                    class   => 'Dist::Zilla::Plugin::OptionalFeature',
+                    name    => 'FeatureName',
+                    version => Dist::Zilla::Plugin::OptionalFeature->VERSION,
+                    config => {
+                        'Dist::Zilla::Plugin::OptionalFeature' => {
+                            name => 'FeatureName',
+                            description => 'FeatureName',
+                            always_recommend => 0,
+                            require_develop => 1,
+                            prompt => 0,
+                            default => 0,
+                            phase => 'runtime',
+                            type => 'requires',
+                            prereqs => { A => 0 },
+                        },
+                    },
+                }),
+            }),
         }),
         'metadata correct when -default is explicitly set to false',
-    );
+    ) or diag 'got distmeta: ', explain $tzil->distmeta;
+
+    TODO: {
+        local $TODO = 'x_ keys should be valid everywhere!';
+        is_valid_spec($tzil);
+    }
 
     diag 'got log messages: ', explain $tzil->log_messages
         if not Test::Builder->new->is_passing;

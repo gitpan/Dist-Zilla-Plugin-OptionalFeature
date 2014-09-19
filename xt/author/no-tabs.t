@@ -15,6 +15,7 @@ my @files = (
     't/03-name-syntax.t',
     't/04-default.t',
     't/05-require-develop.t',
+    't/06-prompt.t',
     't/lib/SpecCompliant.pm',
     'xt/author/00-compile.t',
     'xt/author/clean-namespaces.t',
