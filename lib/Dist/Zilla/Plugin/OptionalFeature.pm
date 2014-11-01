@@ -1,8 +1,8 @@
 use strict;
 use warnings;
 package Dist::Zilla::Plugin::OptionalFeature;
-# git description: v0.016-7-gdfed9a2
-$Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.017';
+# git description: v0.017-5-g77647c7
+$Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.018';
 # ABSTRACT: Specify prerequisites for optional features in your distribution
 # vim: set ts=8 sw=4 tw=78 et :
 
@@ -240,7 +240,7 @@ Dist::Zilla::Plugin::OptionalFeature - Specify prerequisites for optional featur
 
 =head1 VERSION
 
-version 0.017
+version 0.018
 
 =head1 SYNOPSIS
 
@@ -286,6 +286,8 @@ plugin configurations (keeping the feature name and description constant):
     -phase = test
     Foo::Baz = 0
 
+B<NOTE>: this doesn't seem to work properly with L<CPAN::Meta::Merge> (used in L<Dist::Zilla> since version 5.022).
+
 It is possible that future versions of this plugin may allow a more compact
 way of providing sophisticated prerequisite specifications.
 
@@ -325,7 +327,8 @@ The prompt feature can only be used with F<Makefile.PL>. If a F<Build.PL> is
 detected in the build and C<=prompt> is set, the build will fail.
 
 As with any other interactive features, the installing user can bypass the
-prompts with C<PERL_MM_USE_DEFAULT=1>.
+prompts with C<PERL_MM_USE_DEFAULT=1>.  You may want to set this when running
+C<dzil build>.
 
 =head1 CONFIGURATION OPTIONS
 
