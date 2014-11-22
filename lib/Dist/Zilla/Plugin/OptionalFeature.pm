@@ -1,8 +1,8 @@
 use strict;
 use warnings;
 package Dist::Zilla::Plugin::OptionalFeature;
-# git description: v0.017-5-g77647c7
-$Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.018';
+# git description: v0.018-3-ged67a17
+$Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.019';
 # ABSTRACT: Specify prerequisites for optional features in your distribution
 # vim: set ts=8 sw=4 tw=78 et :
 
@@ -23,8 +23,7 @@ has name => (
 );
 has description => (
     is => 'ro', isa => NonEmptySimpleStr,
-    lazy => 1,
-    default => sub { shift->name }
+    required => 1,
 );
 
 has always_recommend => (
@@ -142,12 +141,14 @@ sub BUILD
         $self->log_fatal('prompts are only used for the \'requires\' type')
             if $self->_prereq_type ne 'requires';
 
+        (my $description = $self->description) =~ s/'/\\'/g;
+
         my $plugin = use_module('Dist::Zilla::Plugin::DynamicPrereqs', '0.007')->new(
             zilla => $self->zilla,
             plugin_name => 'via OptionalFeature (' . ($self->plugin_name || $self->name) . ')',
             delimiter => '|',
             raw => [
-                "if (prompt('install " . $self->name . ' (' . $self->description . ')? '
+                "if (prompt('install $description? "
                     . ($self->default ? "[Y/n]', 'Y'" : "[y/N]', 'N'" )
                     . ') =~ /^y/i) {',
                 (map {
@@ -240,7 +241,7 @@ Dist::Zilla::Plugin::OptionalFeature - Specify prerequisites for optional featur
 
 =head1 VERSION
 
-version 0.018
+version 0.019
 
 =head1 SYNOPSIS
 
