@@ -1,5 +1,10 @@
 Revision history for Dist-Zilla-Plugin-OptionalFeature
 
+0.020     2014-11-29 04:53:50Z
+          - when setting up prompting in Makefile.PL for multiple optional
+            features, control all prompts from one master plugin to ensure the
+            prompt order remains as desired
+
 0.019     2014-11-22 07:35:51Z
           - make the -description option mandatory, for more readable prompt
             strings

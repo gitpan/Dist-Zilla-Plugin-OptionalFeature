@@ -78,15 +78,16 @@ EOW
         "Karen Etheridge <ether\@cpan.org>"
       ],
       "dist_name" => "Dist-Zilla-Plugin-OptionalFeature",
-      "dist_version" => "0.019",
+      "dist_version" => "0.020",
       "license" => "perl",
       "module_name" => "Dist::Zilla::Plugin::OptionalFeature",
       "recommends" => {},
       "recursive_test_files" => 1,
       "requires" => {
         "Carp" => 0,
-        "Dist::Zilla::Plugin::DynamicPrereqs" => "0.007",
+        "Dist::Zilla::Plugin::DynamicPrereqs" => 0,
         "Dist::Zilla::Plugin::MetaResources" => "4.300039",
+        "Dist::Zilla::Role::BeforeBuild" => 0,
         "Dist::Zilla::Role::MetaProvider" => 0,
         "Dist::Zilla::Role::PrereqSource" => 0,
         "Module::Runtime" => 0,

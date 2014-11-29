@@ -122,8 +122,9 @@
       "runtime" : {
          "requires" : {
             "Carp" : "0",
-            "Dist::Zilla::Plugin::DynamicPrereqs" : "0.007",
+            "Dist::Zilla::Plugin::DynamicPrereqs" : "0",
             "Dist::Zilla::Plugin::MetaResources" : "4.300039",
+            "Dist::Zilla::Role::BeforeBuild" : "0",
             "Dist::Zilla::Role::MetaProvider" : "0",
             "Dist::Zilla::Role::PrereqSource" : "0",
             "Module::Runtime" : "0",
@@ -165,7 +166,7 @@
    "provides" : {
       "Dist::Zilla::Plugin::OptionalFeature" : {
          "file" : "lib/Dist/Zilla/Plugin/OptionalFeature.pm",
-         "version" : "0.019"
+         "version" : "0.020"
       }
    },
    "release_status" : "stable",
@@ -183,7 +184,7 @@
       "x_IRC" : "irc://irc.perl.org/#distzilla",
       "x_MailingList" : "http://dzil.org/#mailing-list"
    },
-   "version" : "0.019",
+   "version" : "0.020",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.021005"
@@ -213,7 +214,7 @@
                }
             },
             "name" : "@Author::ETHER/Git::NextVersion",
-            "version" : "2.025"
+            "version" : "2.026"
          },
          {
             "class" : "Dist::Zilla::Plugin::PromptIfStale",
@@ -290,7 +291,7 @@
                }
             },
             "name" : "@Author::ETHER/Git::GatherDir",
-            "version" : "2.025"
+            "version" : "2.026"
          },
          {
             "class" : "Dist::Zilla::Plugin::MetaYAML",
@@ -590,7 +591,7 @@
                }
             },
             "name" : "@Author::ETHER/AuthorityFromModule",
-            "version" : "0.003"
+            "version" : "0.004"
          },
          {
             "class" : "Dist::Zilla::Plugin::Authority",
@@ -756,7 +757,7 @@
                }
             },
             "name" : "@Author::ETHER/.ackrc",
-            "version" : "0.027"
+            "version" : "0.028"
          },
          {
             "class" : "Dist::Zilla::Plugin::Run::AfterBuild",
@@ -768,7 +769,7 @@
                }
             },
             "name" : "@Author::ETHER/.latest",
-            "version" : "0.027"
+            "version" : "0.028"
          },
          {
             "class" : "Dist::Zilla::Plugin::CheckStrictVersion",
@@ -791,7 +792,7 @@
                }
             },
             "name" : "@Author::ETHER/initial check",
-            "version" : "2.025"
+            "version" : "2.026"
          },
          {
             "class" : "Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts",
@@ -844,7 +845,7 @@
                }
             },
             "name" : "@Author::ETHER/after tests",
-            "version" : "2.025"
+            "version" : "2.026"
          },
          {
             "class" : "Dist::Zilla::Plugin::CheckIssues",
@@ -880,7 +881,7 @@
                }
             },
             "name" : "@Author::ETHER/remove old READMEs",
-            "version" : "0.027"
+            "version" : "0.028"
          },
          {
             "class" : "Dist::Zilla::Plugin::Git::Commit",
@@ -908,7 +909,7 @@
                }
             },
             "name" : "@Author::ETHER/Git::Commit",
-            "version" : "2.025"
+            "version" : "2.026"
          },
          {
             "class" : "Dist::Zilla::Plugin::Git::Tag",
@@ -916,7 +917,7 @@
                "Dist::Zilla::Plugin::Git::Tag" : {
                   "branch" : null,
                   "signed" : 0,
-                  "tag" : "v0.019",
+                  "tag" : "v0.020",
                   "tag_format" : "v%v%t",
                   "tag_message" : "v%v%t",
                   "time_zone" : "local"
@@ -926,7 +927,7 @@
                }
             },
             "name" : "@Author::ETHER/Git::Tag",
-            "version" : "2.025"
+            "version" : "2.026"
          },
          {
             "class" : "Dist::Zilla::Plugin::GitHub::Update",
@@ -947,7 +948,7 @@
                }
             },
             "name" : "@Author::ETHER/Git::Push",
-            "version" : "2.025"
+            "version" : "2.026"
          },
          {
             "class" : "Dist::Zilla::Plugin::Run::AfterRelease",
@@ -957,7 +958,7 @@
                }
             },
             "name" : "@Author::ETHER/install release",
-            "version" : "0.027"
+            "version" : "0.028"
          },
          {
             "class" : "Dist::Zilla::Plugin::ConfirmRelease",

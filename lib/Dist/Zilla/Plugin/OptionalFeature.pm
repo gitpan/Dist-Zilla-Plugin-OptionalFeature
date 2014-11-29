@@ -1,13 +1,14 @@
 use strict;
 use warnings;
 package Dist::Zilla::Plugin::OptionalFeature;
-# git description: v0.018-3-ged67a17
-$Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.019';
+# git description: v0.019-10-g6d7b0fc
+$Dist::Zilla::Plugin::OptionalFeature::VERSION = '0.020';
 # ABSTRACT: Specify prerequisites for optional features in your distribution
 # vim: set ts=8 sw=4 tw=78 et :
 
 use Moose;
 with
+    'Dist::Zilla::Role::BeforeBuild',
     'Dist::Zilla::Role::MetaProvider',
     'Dist::Zilla::Role::PrereqSource';
 
@@ -127,12 +128,12 @@ around BUILDARGS => sub
     };
 };
 
-sub BUILD
-{
-    my $self = shift;
+has _dynamicprereqs_prompt => (
+    is => 'ro', isa => 'ArrayRef[Str]',
+    lazy => 1,
+    default => sub {
+        my $self = shift;
 
-    if ($self->prompt)
-    {
         my $phase = $self->_prereq_phase;
         my $mm_key = $phase eq 'runtime' ? 'PREREQ_PM'
             : $phase eq 'test' ? 'TEST_REQUIRES'
@@ -143,20 +144,58 @@ sub BUILD
 
         (my $description = $self->description) =~ s/'/\\'/g;
 
-        my $plugin = use_module('Dist::Zilla::Plugin::DynamicPrereqs', '0.007')->new(
+        my $prompt = "prompt('install $description? "
+                . ($self->default ? "[Y/n]', 'Y'" : "[y/N]', 'N'" )
+                . ') =~ /^y/i';
+        my @assignments = map {
+            qq!\$WriteMakefileArgs{$mm_key}{'$_'} = \$FallbackPrereqs{'$_'} = '${ \$self->_prereq_version($_) }'!
+        } sort $self->_prereq_modules;
+
+        # TODO: in the future, [DynamicPrereqs] will have more sophisticated
+        # options, so we would just need to pass the prompt text, default
+        # answer, and list of prereqs and phases.
+        [
+            @assignments > 1
+                ? (
+                    'if (' . $prompt . ') {',   # to mollify vim
+                    (map { '  ' . $_ . ';' } @assignments),
+                    '}',
+                  )
+                : ( @assignments, '  if ' . $prompt . ';' )
+        ];
+    },
+);
+
+# package-scoped singleton to track the OptionalFeature instance that manages all the dynamic prereqs
+my $master_plugin;
+sub __clear_master_plugin { undef $master_plugin } # for testing
+
+sub before_build
+{
+    my $self = shift;
+
+    if ($self->prompt and not $master_plugin)
+    {
+        # because [DynamicPrereqs] inserts Makefile.PL content in reverse
+        # order to when it was called, we make just one [OptionalFeature]
+        # plugin will create and add all DynamicPrereqs plugins, so the order
+        # of the prompts is in the same order as the dist.ini declarations and
+        # the corresponding metadata.
+
+        $master_plugin = $self;
+
+        my $plugin = use_module('Dist::Zilla::Plugin::DynamicPrereqs')->new(
             zilla => $self->zilla,
-            plugin_name => 'via OptionalFeature (' . ($self->plugin_name || $self->name) . ')',
-            delimiter => '|',
+            plugin_name => 'via OptionalFeature',
             raw => [
-                "if (prompt('install $description? "
-                    . ($self->default ? "[Y/n]', 'Y'" : "[y/N]', 'N'" )
-                    . ') =~ /^y/i) {',
-                (map {
-                    qq!|  \$WriteMakefileArgs{$mm_key}{'$_'} = \$FallbackPrereqs{'$_'} = '${ \$self->_prereq_version($_) }';!
-                } sort $self->_prereq_modules),
-                '}',
+                join("\n",
+                    map {
+                        join("\n", $_->prompt ? @{ $_->_dynamicprereqs_prompt } : ())
+                    } grep { $_->isa(__PACKAGE__) } @{ $self->zilla->plugins },
+                )
             ],
         );
+
         push @{ $self->zilla->plugins }, $plugin;
     }
 }
@@ -241,7 +280,7 @@ Dist::Zilla::Plugin::OptionalFeature - Specify prerequisites for optional featur
 
 =head1 VERSION
 
-version 0.019
+version 0.020
 
 =head1 SYNOPSIS
 
@@ -314,7 +353,7 @@ code needed to make that feature work (along with all of its dependencies).
 This allows external projects to declare a prerequisite not just on your
 distribution, but also a particular feature of that distribution.
 
-=for Pod::Coverage mvp_aliases BUILD metadata register_prereqs
+=for Pod::Coverage mvp_aliases BUILD before_build metadata register_prereqs
 
 =head1 PROMPTING
 
@@ -363,10 +402,14 @@ non-interactively).  Defaults to true.
 
 =item * C<-prompt>
 
+(Available since version 0.017)
+
 If set with a true value, F<Makefile.PL> is modified to include interactive
 prompts.
 
 =item * C<-default>
+
+(Available since version 0.006)
 
 If set with a true value, non-interactive installs will automatically
 fold the feature's prerequisites into the regular prerequisites.

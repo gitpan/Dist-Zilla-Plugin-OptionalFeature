@@ -39,7 +39,7 @@ binmode STDERR, ':encoding(UTF-8)';
                             -relationship => 'requires',
                             -prompt => 1,
                             -default => 1,
-                            'Foo' => '1.0', 'Bar' => '2.0',
+                            'Foo' => '1.0',
                         },
                     ],
                 ),
@@ -47,6 +47,7 @@ binmode STDERR, ':encoding(UTF-8)';
         },
     );
 
+    $tzil->chrome->logger->set_debug(1);
     is(
         exception { $tzil->build },
         undef,
@@ -64,7 +65,6 @@ binmode STDERR, ':encoding(UTF-8)';
                     prereqs => {
                         runtime => { requires => {
                             'Foo' => '1.0',
-                            'Bar' => '2.0',
                         } },
                     },
                 },
@@ -75,7 +75,6 @@ binmode STDERR, ':encoding(UTF-8)';
                 # no test recommendations
                 develop => { requires => {
                     'Foo' => '1.0',
-                    'Bar' => '2.0',
                 } },
             },
             x_Dist_Zilla => superhashof({
@@ -96,14 +95,13 @@ binmode STDERR, ':encoding(UTF-8)';
                                 type => 'requires',
                                 prereqs => {
                                     'Foo' => '1.0',
-                                    'Bar' => '2.0',
                                 },
                             },
                         },
                     },
                     superhashof({
                         class   => 'Dist::Zilla::Plugin::DynamicPrereqs',
-                        name    => 'via OptionalFeature (FeatureName)',
+                        name    => 'via OptionalFeature',
                         version => Dist::Zilla::Plugin::DynamicPrereqs->VERSION,
                     }),
                 ),
@@ -121,13 +119,18 @@ binmode STDERR, ':encoding(UTF-8)';
 
     like(
         $content,
-        qr!\Qif (prompt('install feature description? [Y/n]', 'Y') =~ /^y/i) {\E
-\s*\$\QWriteMakefileArgs{PREREQ_PM}{'Bar'} = \E\$\QFallbackPrereqs{'Bar'} = '2.0';\E
-\s*\$\QWriteMakefileArgs{PREREQ_PM}{'Foo'} = \E\$\QFallbackPrereqs{'Foo'} = '1.0';\E
-\}!,
+        qr!
+\$\QWriteMakefileArgs{PREREQ_PM}{'Foo'} = \E\$\QFallbackPrereqs{'Foo'} = '1.0'\E
+  \Qif prompt('install feature description? [Y/n]', 'Y') =~ /^y/i;\E
+!,
         'Makefile.PL contains the correct code for runtime prereqs with -default = 1',
     );
+
+    diag 'got log messages: ', explain $tzil->log_messages
+        if not Test::Builder->new->is_passing;
 }
+
+Dist::Zilla::Plugin::OptionalFeature::__clear_master_plugin();
 
 {
     my $tzil = Builder->from_config(
@@ -155,6 +158,7 @@ binmode STDERR, ':encoding(UTF-8)';
         },
     );
 
+    $tzil->chrome->logger->set_debug(1);
     is(
         exception { $tzil->build },
         undef,
@@ -211,7 +215,7 @@ binmode STDERR, ':encoding(UTF-8)';
                     },
                     superhashof({
                         class   => 'Dist::Zilla::Plugin::DynamicPrereqs',
-                        name    => 'via OptionalFeature (FeatureName)',
+                        name    => 'via OptionalFeature',
                         version => Dist::Zilla::Plugin::DynamicPrereqs->VERSION,
                     }),
                 ),
@@ -229,40 +233,55 @@ binmode STDERR, ':encoding(UTF-8)';
 
     like(
         $content,
-        qr!\Qif (prompt('install feature description? [y/N]', 'N') =~ /^y/i) {\E
-\s*\$\QWriteMakefileArgs{TEST_REQUIRES}{'Bar'} = \E\$\QFallbackPrereqs{'Bar'} = '2.0';\E
-\s*\$\QWriteMakefileArgs{TEST_REQUIRES}{'Foo'} = \E\$\QFallbackPrereqs{'Foo'} = '1.0';\E
+        qr!
+\Qif (prompt('install feature description? [y/N]', 'N') =~ /^y/i) {\E
+  \$\QWriteMakefileArgs{TEST_REQUIRES}{'Bar'} = \E\$\QFallbackPrereqs{'Bar'} = '2.0';\E
+  \$\QWriteMakefileArgs{TEST_REQUIRES}{'Foo'} = \E\$\QFallbackPrereqs{'Foo'} = '1.0';\E
 !,
+        # } to mollify vim
         'Makefile.PL contains the correct code for runtime prereqs with -default = 1',
     );
+
+    diag 'got log messages: ', explain $tzil->log_messages
+        if not Test::Builder->new->is_passing;
 }
 
+Dist::Zilla::Plugin::OptionalFeature::__clear_master_plugin();
+
 {
-    like( exception {
-        Builder->from_config(
-            { dist_root => 't/does_not_exist' },
-            {
-                add_files => {
-                    path(qw(source dist.ini)) => simple_ini(
-                        [ GatherDir => ],
-                        [ MetaConfig => ],
-                        [ Prereqs => TestRequires => { Tester => 0 } ],   # so we have prereqs to test for
-                        [ OptionalFeature => FeatureName => {
-                                -description => 'feature description',
-                                -phase => 'runtime',
-                                -relationship => 'recommends',
-                                -prompt => 1,
-                                'Foo' => '1.0', 'Bar' => '2.0',
-                            },
-                        ],
-                    ),
-                },
+    my $tzil = Builder->from_config(
+        { dist_root => 't/does_not_exist' },
+        {
+            add_files => {
+                path(qw(source dist.ini)) => simple_ini(
+                    [ GatherDir => ],
+                    [ MetaConfig => ],
+                    [ Prereqs => TestRequires => { Tester => 0 } ],   # so we have prereqs to test for
+                    [ OptionalFeature => FeatureName => {
+                            -description => 'feature description',
+                            -phase => 'runtime',
+                            -relationship => 'recommends',
+                            -prompt => 1,
+                            'Foo' => '1.0', 'Bar' => '2.0',
+                        },
+                    ],
+                ),
             },
-        ) },
+        },
+    );
+
+    $tzil->chrome->logger->set_debug(1);
+    like(
+        exception { $tzil->build },
         qr/prompts are only used for the 'requires' type/,
         'prompting cannot be combined with the recommends or suggests prereq type',
     );
+
+    diag 'got log messages: ', explain $tzil->log_messages
+        if not Test::Builder->new->is_passing;
 }
+
+Dist::Zilla::Plugin::OptionalFeature::__clear_master_plugin();
 
 {
     my $tzil = Builder->from_config(
@@ -290,6 +309,7 @@ binmode STDERR, ':encoding(UTF-8)';
         },
     );
 
+    $tzil->chrome->logger->set_debug(1);
     is(
         exception { $tzil->build },
         undef,
@@ -346,7 +366,7 @@ binmode STDERR, ':encoding(UTF-8)';
                     },
                     superhashof({
                         class   => 'Dist::Zilla::Plugin::DynamicPrereqs',
-                        name    => 'via OptionalFeature (FeatureName)',
+                        name    => 'via OptionalFeature',
                         version => Dist::Zilla::Plugin::DynamicPrereqs->VERSION,
                     }),
                 ),
@@ -364,12 +384,17 @@ binmode STDERR, ':encoding(UTF-8)';
 
     like(
         $content,
-        qr!\Qif (prompt('install feature description with "çƦăż\'ɏ" characters? [y/N]', 'N') =~ /^y/i) {\E
-\s*\$\QWriteMakefileArgs{TEST_REQUIRES}{'Bar'} = \E\$\QFallbackPrereqs{'Bar'} = '2.0';\E
-\s*\$\QWriteMakefileArgs{TEST_REQUIRES}{'Foo'} = \E\$\QFallbackPrereqs{'Foo'} = '1.0';\E
+        qr!
+\Qif (prompt('install feature description with "çƦăż\'ɏ" characters? [y/N]', 'N') =~ /^y/i) {\E
+  \$\QWriteMakefileArgs{TEST_REQUIRES}{'Bar'} = \E\$\QFallbackPrereqs{'Bar'} = '2.0';\E
+  \$\QWriteMakefileArgs{TEST_REQUIRES}{'Foo'} = \E\$\QFallbackPrereqs{'Foo'} = '1.0';\E
 !,
+        # } to mollify vim
         'Makefile.PL contains the correct code for runtime prereqs with -default = 1',
     );
+
+    diag 'got log messages: ', explain $tzil->log_messages
+        if not Test::Builder->new->is_passing;
 }
 
 done_testing;
